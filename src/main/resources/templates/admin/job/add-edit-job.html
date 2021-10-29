@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Job Details</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <h1>
+        Job Detail
+        <small>Control panel</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Job Details</li>
+    </ol>
+</section>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Horizontal Form -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Job Detail</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form th:action="@{/job/save}" th:object="${job}" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Job Id</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"  readonly="readonly" th:field="*{id}" placeholder="Job ID">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Job Type</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{jobType}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Property<span>*</span></label>
+                            <div class="col-sm-10">
+                                <select class="form-control" th:field="*{propertyId}">
+                                    <option value="">Select...</option>
+                                    <option th:each="item: ${properties}" th:value="${item['key']}" th:utext="${item['value']}"/>
+                                </select>
+                                <p class="text-red" th:if="${#fields.hasErrors('propertyId')}" th:errors="*{propertyId}"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Status</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"  th:field="*{status}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Inspected</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{inspected}" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Main Access Contact Type</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{mainAccessContactType}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Main Access Contact Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{mainAccessContactName}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Main Access Contact Phone</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{mainAccessContactPhone}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Assigned Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" th:field="*{assignedDate}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Inspection Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" th:field="*{InspectionDate}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Due To Depreciator</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" th:field="*{dueToDepreciator}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Job Created Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" readonly="readonly" th:field="*{createdDate}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Job Created By</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" readonly="readonly" th:field="*{createdBy}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Job Updated Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" readonly="readonly" th:field="*{updatedDate}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Job Updated By</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" readonly="readonly" th:field="*{updatedBy}" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer center">
+                        <a th:href="@{/job/list}">
+                            <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
+                        </a>
+                        <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script>
+    </script>
+</th:block>
+
+</body>
+
+</html>

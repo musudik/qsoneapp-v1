@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Property Details</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <h1>
+        Property Detail
+        <small>Control panel</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Property Details</li>
+    </ol>
+</section>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Horizontal Form -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Property Detail</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form th:action="@{/property/save}" th:object="${property}" method="post" class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Property Id</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"  readonly="readonly" th:field="*{id}" placeholder="property ID">
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label class="col-sm-2 control-label">Property Type:<span>*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"  readonly="readonly" th:field="*{propertyType}" placeholder="Property Type">
+                            </div>
+                        </div> -->
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Property Type</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{propertyType}" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Owner</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"  th:field="*{owner}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Phone</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{phone}" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Mobile</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{mobile}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{email}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Behalf Of Owner</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{forAndBehalfOfOwner}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Authorized Person</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{nameOfAuthorizedPerson}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Comments</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{comments}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Flat Number</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{flatNumber}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Street</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{streetName}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Suburb</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{suburb}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">State</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{state}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Post Code</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{postcode}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Country</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{country}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Purchase Price</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{purchasePrice}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('purchasePrice')}" th:errors="*{purchasePrice}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Stamp Duty</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{stampDuty}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('stampDuty')}" th:errors="*{stampDuty}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Legal Costs</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{legalCosts}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('legalCosts')}" th:errors="*{legalCosts}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Additional Expenses</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{additionalExpenses}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('additionalExpenses')}" th:errors="*{additionalExpenses}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Original Building Cost</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{originalBuildingCost}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('originalBuildingCost')}" th:errors="*{originalBuildingCost}"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Construction Start Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" th:field="*{constructionStart}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('constructionStart')}" th:errors="*{constructionStart}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Construction End Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" th:field="*{constructionEnd}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('constructionEnd')}" th:errors="*{constructionEnd}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Date Of Contract Exchange</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" th:field="*{dateOfContractExchange}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('dateOfContractExchange')}" th:errors="*{dateOfContractExchange}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Date Settlement</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" th:field="*{dateSettlement}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('dateSettlement')}" th:errors="*{dateSettlement}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">First Lease Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" th:field="*{firstLeaseDate}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('firstLeaseDate')}" th:errors="*{firstLeaseDate}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">First Taxable End Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" th:field="*{firstTaxableEndDate}" />
+                                <p class="text-red" th:if="${#fields.hasErrors('firstTaxableEndDate')}" th:errors="*{firstTaxableEndDate}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Property Created Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" readonly="readonly" th:field="*{createdDate}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Property Created By</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" readonly="readonly" th:field="*{createdBy}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Property Updated Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" readonly="readonly" th:field="*{updatedDate}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Property Updated By</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" readonly="readonly" th:field="*{updatedBy}" />
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer center">
+                        <a th:href="@{/property/list}">
+                            <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
+                        </a>
+                        <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script>
+    </script>
+</th:block>
+
+</body>
+
+</html>
