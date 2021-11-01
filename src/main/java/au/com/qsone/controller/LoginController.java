@@ -22,6 +22,10 @@ public class LoginController {
     @Autowired
     private IUserService userService;
 
+    @GetMapping("/index")
+    public String index(Model model) {
+        return "index";
+    }
 
     @GetMapping("/login")
     public String login(Model model) {

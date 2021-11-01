@@ -1,80 +1,52 @@
-package au.com.qsone.entity;
+package au.com.qsone.web.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Entity
-@Table(name = "PROPERTY")
-public class Property extends BaseEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+/**
+ * 
+ * @author musudi kiran
+ *
+ */
+public class ClientPropertyDto {
 	
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-	Long id;
-	
-	@Column(name = "propertyType", nullable = false)
-	//@NotEmpty(message = "Property Type can't be empty!")
+	@NotEmpty(message = "Property Type can't be empty!")
     private String propertyType;
 	
-	@Column(name = "owner", nullable = false)
-	//@NotEmpty(message = "Property Owner can't be empty!")
+	@NotEmpty(message = "Property Owner can't be empty!")
     private String owner;
-	
-	@Column(name = "forAndBehalfOfOwner", nullable = true)
     private String forAndBehalfOfOwner;
-	
-    @Column(name = "nameOfAuthorizedPerson", nullable = true)
     private String nameOfAuthorizedPerson;
-    
-	@Column(name = "phone", nullable = true)
     private String phone;
-    
-	@Column(name = "mobile", nullable = false)
-	//@NotEmpty(message = "Mobile can't be empty!")
 	private String mobile;
-	
-	
-    @Column(name = "email", nullable = false)
-    //@NotEmpty(message = "Email can't be empty!")
+    @NotEmpty(message = "Email can't be empty!")
     private String email;
-    
-    @Column(name = "comments", nullable = true)
     private String comments;
-    
+    private String improvements;
+
     //Address Details:
-    @Column(name = "flatNumber", nullable = false)
+    private String findAddress;
+    @NotEmpty(message = "Flat Number can't be empty!")
     private String flatNumber;
-    @Column(name = "streetName", nullable = false)
+    @NotEmpty(message = "Street Name can't be empty!")
     private String streetName;
-    @Column(name = "suburb", nullable = false)
+    @NotEmpty(message = "Suburb can't be empty!")
     private String suburb;
-    @Column(name = "state", nullable = false)
+    @NotEmpty(message = "State can't be empty!")
     private String state;
-    @Column(name = "postcode", nullable = false)
+    @NotEmpty(message = "Postcode can't be empty!")
     private String postcode;
-    @Column(name = "country", nullable = false)
+    @NotEmpty(message = "Country can't be empty!")
     private String country;
     
     //Cost Details:
-    @Column(name = "purchasePrice", nullable = true)
     private String purchasePrice;
-    @Column(name = "stampDuty", nullable = true)
     private String stampDuty;
-    @Column(name = "legalCosts", nullable = true)
     private String legalCosts;
-    @Column(name = "additionalExpenses", nullable = true)
     private String additionalExpenses;
-    @Column(name = "originalBuildingCost", nullable = true)
     private String originalBuildingCost;
     
     //Property TimeLine Details:
@@ -89,28 +61,10 @@ public class Property extends BaseEntity implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date firstLeaseDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	//@NotEmpty(message = "First taxable end year can't be empty!")
 	private Date firstTaxableEndDate;
 	
-	@Column(name = "jobId", nullable = true)
-	private Long jobId;
-
 	
-	public String getPropertyMap() {
-		return this.getFlatNumber() +" "+ this.getStreetName() +" "+ this.getPostcode();
-	}
-	
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
 	/**
 	 * @return the propertyType
 	 */
@@ -206,6 +160,30 @@ public class Property extends BaseEntity implements Serializable {
 	 */
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+	/**
+	 * @return the improvements
+	 */
+	public String getImprovements() {
+		return improvements;
+	}
+	/**
+	 * @param improvements the improvements to set
+	 */
+	public void setImprovements(String improvements) {
+		this.improvements = improvements;
+	}
+	/**
+	 * @return the findAddress
+	 */
+	public String getFindAddress() {
+		return findAddress;
+	}
+	/**
+	 * @param findAddress the findAddress to set
+	 */
+	public void setFindAddress(String findAddress) {
+		this.findAddress = findAddress;
 	}
 	/**
 	 * @return the flatNumber
@@ -411,18 +389,4 @@ public class Property extends BaseEntity implements Serializable {
 	public void setFirstTaxableEndDate(Date firstTaxableEndDate) {
 		this.firstTaxableEndDate = firstTaxableEndDate;
 	}
-	/**
-	 * @return the jobId
-	 */
-	public long getJobId() {
-		return jobId;
-	}
-	/**
-	 * @param jobId the jobId to set
-	 */
-	public void setJobId(long jobId) {
-		this.jobId = jobId;
-	}
-	
-	
 }

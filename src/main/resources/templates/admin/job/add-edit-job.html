@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Job Type</label>
+                            <label class="col-sm-2 control-label">Job Type<span>*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" th:field="*{jobType}" />
                             </div>
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Status</label>
+                            <label class="col-sm-2 control-label">Status<span>*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"  th:field="*{status}" />
                                 <p class="text-red" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></p>
@@ -62,28 +62,28 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Inspected</label>
+                            <label class="col-sm-2 control-label">Inspected<span>*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" th:field="*{inspected}" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Main Access Contact Type</label>
+                            <label class="col-sm-2 control-label">Main Access Contact Type<span>*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" th:field="*{mainAccessContactType}" />
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Main Access Contact Name</label>
+                            <label class="col-sm-2 control-label">Main Access Contact Name<span>*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" th:field="*{mainAccessContactName}" />
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Main Access Contact Phone</label>
+                            <label class="col-sm-2 control-label">Main Access Contact Phone<span>*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" th:field="*{mainAccessContactPhone}" />
                             </div>
@@ -111,8 +111,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Job Created Date</label>
                             <div class="col-sm-10">
-                                <input type="date" class="form-control" readonly="readonly" th:field="*{createdDate}" />
-                            </div>
+                            	<input type="text" class="form-control" readonly="readonly"  name="createdDate" th:value="${{createdDate}}" />
+                                <!-- <input type="date" class="form-control" readonly="readonly" name="createdDate" th:value="${#dates.format(createdDate, 'dd-MMM-yyyy HH:mm')}" /> -->
+                            </div>	
                         </div>
                         
                         <div class="form-group">

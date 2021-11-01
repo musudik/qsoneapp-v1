@@ -1,11 +1,8 @@
 package au.com.qsone.controller;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -44,16 +41,26 @@ public class JobController {
     public String addJob(Job job, Model model){
         model.addAttribute("job", job);
         
-        List<Property> properties = propertyService.listAll();
-        model.addAttribute("properties", properties.stream().collect(Collectors.toMap(p -> p.getId(), p -> p.getPropertyMap())));
+        getPropertyList(model);
 
         return add_edit_template;
     }
+
+	private void getPropertyList(Model model) {
+		List<Property> properties = propertyService.listAll();
+        model.addAttribute("properties", properties.stream().collect(Collectors.toMap(p -> p.getId(), p -> p.getPropertyMap())));
+	}
 
     @GetMapping("/edit/{id}")
     public String editJob(@PathVariable("id") long id, Model model){
         Job job = JobService.get(id);
         model.addAttribute("job", job);
+        getPropertyList(model);
+        //String createdDate = job.getCreatedDate().toString();
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm");  
+        String createdDate = formatter.format(job.getCreatedDate());  
+        model.addAttribute("createdDate", createdDate);
 
         return add_edit_template;
     }

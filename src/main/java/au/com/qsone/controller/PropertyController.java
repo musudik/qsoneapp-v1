@@ -22,23 +22,24 @@ import au.com.qsone.entity.Property;
 @Controller
 @RequestMapping("/property")
 public class PropertyController {
+	
+	private static final String add_edit_template="/admin/property/add-edit-property";
+    private static final String list_template="/admin/property/list-property";
+    private static final String list_redirect="redirect:/property/list";
 
     @Autowired
     private au.com.qsone.service.PropertyService propertyService;
-
-    private String add_edit_template="/admin/property/add-edit-property";
-    private String list_template="/admin/property/list-property";
-    private String list_redirect="redirect:/property/list";
-
-
+    
     @GetMapping("/add")
-    public String addProperty(Property Property, Model model){
-        model.addAttribute("property", Property);
+    public String addProperty(Property property, Model model){
+        model.addAttribute("property", property);
         List<Property> properties = propertyService.listAll();
         model.addAttribute("properties", properties);
 
         return add_edit_template;
     }
+    
+    
 
     @GetMapping("/edit/{id}")
     public String editProperty(@PathVariable("id") long id, Model model){
@@ -47,7 +48,8 @@ public class PropertyController {
 
         return add_edit_template;
     }
-
+    
+    
     @PostMapping("/save")
     public String saveProperty(@Valid @ModelAttribute("property") Property property, BindingResult result, Model model){
         model.addAttribute("property", property);

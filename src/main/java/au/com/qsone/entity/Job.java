@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,18 +16,21 @@ public class Job extends BaseEntity implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
+	
+	@NotEmpty(message = "Job Type can't be empty!")
 	@Column(name = "jobType", nullable = false)
     private String jobType;
+	
+	@NotEmpty(message = "Property Status can't be empty!")
 	@Column(name = "status", nullable = false)
     private String status;
-	@Column(name = "inspected", nullable = false)
+	
+	@Column(name = "inspected", nullable = true)
     private Boolean inspected;
 	
+	@NotEmpty(message = "Property can't be empty!")
 	@Column(name = "propertyId", nullable = false)
-	@Convert(converter = PropertyIdConverter.class)
-    private Long propertyId;
-//	@OneToOne(mappedBy = "propertyAddress")
-//    private Property propertyAddress;
+    private String propertyId;
 	
 	@Column(name = "mainAccessContactType", nullable = true)
     private String mainAccessContactType;
@@ -35,41 +39,31 @@ public class Job extends BaseEntity implements Serializable {
 	@Column(name = "mainAccessContactPhone", nullable = true)
     private String mainAccessContactPhone;
 	
-	@Column(name = "assignedDate", nullable = false)
+	@Column(name = "assignedDate", nullable = true)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date assignedDate;
+	
 	@Column(name = "inspectionDate", nullable = true)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date inspectionDate;
+	
+	@Column(name = "dueToDepreciator", nullable = true)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date dueToDepreciator;
+	
 	/**
 	 * @return the propertyId
 	 */
-	public Long getPropertyId() {
+	public String getPropertyId() {
 		return propertyId;
 	}
 	/**
 	 * @param propertyId the propertyId to set
 	 */
-	public void setPropertyId(Long propertyId) {
+	public void setPropertyId(String propertyId) {
 		this.propertyId = propertyId;
 	}
-//	/**
-//	 * @return the propertyAddress
-//	 */
-//	public Property getPropertyAddress() {
-//		return propertyAddress;
-//	}
-//	/**
-//	 * @param propertyAddress the propertyAddress to set
-//	 */
-//	public void setPropertyAddress(Property propertyAddress) {
-//		this.propertyAddress = propertyAddress;
-//	}
-	@Column(name = "dueToDepreciator", nullable = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date dueToDepreciator;
-	
-	
+
 	/**
 	 * @return the id
 	 */

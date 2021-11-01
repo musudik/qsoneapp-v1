@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 /**
  * Created by Kiran Musudi.
@@ -45,6 +46,10 @@ public class CustomWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(
+        		"/index/**",
+        		"/enquiry/**",
+        		"/saveEnquiry/**",
+        		"https://australianaddresses.net.au/**",
                 "/register**",
                 "/dist/**"
                 , "/plugins/**"
@@ -64,11 +69,25 @@ public class CustomWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
-                .permitAll();
+                .permitAll()
+          .and().csrf().disable();
 
     }
     public void configure(WebSecurity web) throws Exception {
        // web.ignoring().antMatchers("/resources/static/**").anyRequest();
+    	web.ignoring().antMatchers(
+    			"https://australianaddresses.net.au/**",
+                "/css/**",
+                "/js/**",
+                "/fonts/**",
+                "../libs/**",
+                "/images/**"
+        );
+    }
+    
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*");
     }
 
 }

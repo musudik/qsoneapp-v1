@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
+
 import java.util.Collection;
 
 @Entity
@@ -28,8 +30,6 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-
-
     public Long getId() {
         return id;
     }
@@ -37,8 +37,7 @@ public class User extends BaseEntity {
         this.id=id;
     }
 
-
-    //@NotEmpty(message = "First name can't be empty!")
+    @NotEmpty(message = "First name can't be empty!")
     @Column(name = "first_name")
     private String firstName;
 
@@ -49,7 +48,7 @@ public class User extends BaseEntity {
         this.firstName=firstName;
     }
 
-    //@NotEmpty(message = "Last name can't be empty!")
+    @NotEmpty(message = "Last name can't be empty!")
     @Column(name = "last_name")
     private String lastName;
 
@@ -61,8 +60,8 @@ public class User extends BaseEntity {
     }
 
     @Column(name = "email")
-    //@Email(message = "*Please provide a valid Email")
-    //@NotEmpty(message = "*Please provide an email")
+    @Email(message = "*Please provide a valid Email")
+    @NotEmpty(message = "*Please provide an email")
     private String email;
 
     public String getEmail(){
@@ -74,8 +73,8 @@ public class User extends BaseEntity {
 
 
     @Column(name = "password")
-    //@Length(min = 5, message = "*Your password must have at least 5 characters")
-    //@NotEmpty(message = "*Please provide your password")
+    @Length(min = 5, message = "*Your password must have at least 5 characters")
+    @NotEmpty(message = "*Please provide your password")
     private String password;
 
     public String getPassword(){

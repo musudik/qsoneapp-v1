@@ -1,10 +1,8 @@
 package au.com.qsone.service;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
-import au.com.qsone.repository.IPropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import au.com.qsone.entity.Property;
+import au.com.qsone.repository.IPropertyRepository;
 
 @Service
 @Transactional
@@ -47,8 +46,8 @@ public class PropertyService {
     }
 
 
-    public void save(Property Property) {
-        repo.save(Property);
+    public void save(Property property) {
+        repo.save(property);
     }
 
     public Property get(long id) {
