@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Client Property Form</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/ClientLTE.min.css" />
+    <link rel="stylesheet" href="/dist/css/index.css" id="stylesheet"/>
+    
+</head>
+<body>
+<div class="container">
+     <!-- Brand -->
+     <a class="navbar-brand" href="index.html">
+         <img align="left" alt="Image placeholder" width="10%" src="/dist/img/qsone.png" id="navbar-logo">
+     </a>
+</div>
+ 
+<form th:action="@{/saveEnquiry}" th:object="${clientPropertyDto}" method="post">
+<section class="h-100 h-custom gradient-custom-2">
+
+  <div class="container py-5 h-100">
+  
+    <div class="row d-flex justify-content-center align-items-center h-100">
+    
+    <h3 class="fw-normal mb-5" style="color: #4835d4;">Client Property Enquiry Form</h3>
+   
+     <div class="col-12">
+      	<div th:if="${param.error}">
+	    <div class="alert alert-danger">
+	        There was some error in enquiry submission, please retry.
+	    </div>
+	 </div>
+	
+	 <div th:if="${param.property}">
+	    <div class="alert alert-danger">
+	        There is already an enquiry for this property.
+	    </div>
+	 </div>
+
+	 <div th:if="${param.job}">
+	    <div class="alert alert-info">You enquiry has been submited, please note the enquiry reference #<span th:text="${param.job}"/></div>
+	 </div>
+      	
+        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <div class="col-lg-6">
+                <div class="p-5">
+                  <h3 class="fw-normal mb-5" style="color: #4835d4;">General Information</h3>
+                  <div class="mb-4 pb-2">
+                    <div class="form-outline">
+                      <input type="text" id="owner" class="form-control form-control-lg" th:field="*{owner}" required  placeholder="Enter owner(s) name" />
+                        <label class="form-label" for="form3Examplev2">Owner *</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <input type="text" id="phone" class="form-control form-control-lg" th:field="*{phone}" placeholder="Enter phone number" />
+                        <label class="form-label" for="form3Examplev2">Phone</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <input type="text" id="mobile" class="form-control form-control-lg" th:field="*{mobile}" placeholder="Enter mobile number" />
+                        <label class="form-label" for="form3Examplev2">Mobile</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 pb-2">
+                    <div class="form-outline">
+                      <input type="text" id="email" class="form-control form-control-lg" th:field="*{email}" required  placeholder="Enter email" />
+                      <label class="form-label" for="form3Examplev4">Email</label>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-4 pb-2">
+                  	<div class="form-outline">
+		                <select id="propertyType" class="form-control form-control-lg" name="propertyType" th:field="*{propertyType}" required>
+		            		<option value="">Select property type</option>
+							<option value="apartment">Apartment</option>
+							<option value="house">House</option>
+							<option value="townHouse">Town House</option>
+							<option value="unit">Unit</option>
+							<option value="villa">Villa</option>
+						</select>
+						<label class="form-label" for="form3Examplev4">Property Type*</label>
+					</div>
+				  </div>
+				  
+				  <div class="mb-4 pb-2">
+                    <div class="form-outline">
+                      <input type="text" id="findAddress" class="form-control form-control-lg" th:field="*{findAddress}" placeholder="Type address and select" />
+                      <label class="form-label" for="form3Examplev4">Find Address</label>
+                    </div>
+                  </div>
+                  
+				  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <input type="text" id="flatNumber" class="form-control form-control-lg" th:field="*{flatNumber}" required  placeholder="Enter flat number" />
+                        <label class="form-label" for="form3Examplev2">Flat Number</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <input type="text" id="streetName" class="form-control form-control-lg" th:field="*{streetName}" required  placeholder="Enter Street Name" />
+                        <label class="form-label" for="form3Examplev2">Street Name</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <input type="text" id="suburb" class="form-control form-control-lg" th:field="*{suburb}" required  placeholder="Enter Suburb" />
+                        <label class="form-label" for="form3Examplev2">Suburb</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                      	<select id="state" class="form-control form-control-lg" name="state" th:field="*{state}" required>
+		            		<option value="">Select state</option>
+							<option value="NSW">NSW</option>
+							<option value="NT">NT</option>
+							<option value="QLD">QLD</option>
+							<option value="SA">SA</option>
+							<option value="TAS">TAS</option>
+							<option value="VIC">VIC</option>
+							<option value="WA">WA</option>
+						</select>
+                        <label class="form-label" for="form3Examplev2">State</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <input type="text" id="postcode" class="form-control form-control-lg" th:field="*{postcode}" required  placeholder="Enter postcode" />
+                        <label class="form-label" for="form3Examplev2">Postcode</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <input type="text" id="country" class="form-control form-control-lg" th:field="*{country}" required  placeholder="Enter Country" />
+                        <label class="form-label" for="form3Examplev2">Country</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-4 pb-2">
+                    <div class="form-outline">
+                      <textarea id="comments" rows="8" cols="120" class="form-control form-control-lg" name="lines" form="usrform" th:field="*{comments}" placeholder="Please provide any other details below"></textarea>
+                      <label class="form-label" for="form3Examplev4">Please provide any other details below</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 bg-gray-500 text-white">
+                <div class="p-5">
+                  <h3 class="fw-normal mb-5">Property Details</h3>
+
+				  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="date" id="constructionStart" class="form-control form-control-lg" th:field="*{constructionStart}" placeholder="Enter Construction Start Date" />
+                      	<label class="form-label" for="form3Examplea2">Date construction commenced</label>
+                      </div>
+                    </div>
+                     <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="date" id="constructionEnd" class="form-control form-control-lg" th:field="*{constructionEnd}" placeholder="Enter Construction End Date" />
+                      	<label class="form-label" for="form3Examplea2">Date construction completed</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="date" id="dateSettlement" class="form-control form-control-lg" th:field="*{dateSettlement}" placeholder="Enter Settlement Date" />
+                        <label class="form-label" for="form3Examplea2">Date of settlement</label>
+                      </div>
+                    </div>
+                     <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="date" id="firstLeaseDate" class="form-control form-control-lg" th:field="*{firstLeaseDate}" placeholder="Enter first available date for lease" />
+                      	<label class="form-label" for="form3Examplea2">Date first available for lease</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="date" id="firstTaxableEndDate" class="form-control form-control-lg" th:field="*{firstTaxableEndDate}" required placeholder="Enter first Taxable End Date" />
+                      <label class="form-label" for="form3Examplea2">First end of financial year 30 June</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="text" id="purchasePrice" class="form-control form-control-lg" th:field="*{purchasePrice}" placeholder="Enter purchase price" />
+                        <label class="form-label" for="form3Examplea2">Purchase Price</label>
+                      </div>
+                    </div>
+                     <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="text" id="stampDuty" class="form-control form-control-lg" th:field="*{stampDuty}" placeholder="Enter stamp duty" />
+                      	<label class="form-label" for="form3Examplea2">Stamp Duty</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="text" id="legalCosts" class="form-control form-control-lg" th:field="*{legalCosts}" placeholder="Enter legal costs" />
+                        <label class="form-label" for="form3Examplea2">Legal Costs</label>
+                      </div>
+                    </div>
+                     <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="text" id="additionalExpenses" class="form-control form-control-lg" th:field="*{additionalExpenses}" placeholder="Enter Additional Expenses" />
+                      	<label class="form-label" for="form3Examplea2">Additional Expenses</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="text" id="originalBuildingCost" class="form-control form-control-lg" th:field="*{originalBuildingCost}" placeholder="Enter Original Building Cost" />
+                        <label class="form-label" for="form3Examplea2">Original Building Cost</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-4 pb-2">
+                    <div class="form-outline">
+                      <textarea rows="8" cols="120" class="form-control form-control-lg" name="lines" form="usrform" th:field="*{improvements}" placeholder="Enter any improvements done after purchase ?"></textarea>
+                      <label class="form-label" for="form3Examplev4">Improvements after purchase</label>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="text" id="forAndBehalfOfOwner" class="form-control form-control-lg" th:field="*{forAndBehalfOfOwner}" placeholder="Enter For and on behalf of the Owner" />
+                        <label class="form-label" for="form3Examplea2">For and on behalf of the Owner</label>
+                      </div>
+                    </div>
+                     <div class="col-md-6 mb-4 pb-2">
+                    	<div class="form-outline">
+                        <input type="text" id="nameOfAuthorizedPerson" class="form-control form-control-lg" th:field="*{nameOfAuthorizedPerson}" placeholder="Enter Name of the authorized person" />
+                      	<label class="form-label" for="form3Examplea2">Name of the authorized person</label>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-light btn-lg" data-mdb-ripple-color="dark">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+	/* var url = "https://australianaddresses.net.au";
+	
+	$('#findAddress').on('input', function() {
+         var input_txt = $('#findAddress').val();
+         var headers = {
+             "accept": "application/json",
+             "Access-Control-Allow-Origin":"*"
+         };
+
+         theme: "bootstrap4",
+         $.ajax({
+           url: "https://australianaddresses.net.au/d?q="+input_txt,
+           method: "get",
+           dataType: "json",
+           delay: 250,
+           mode: "cors",
+           async: true,
+           crossDomain: true,
+           data: { input: input_txt },
+           success: changeInput,
+           headers: headers
+         });
+	});
+	
+	function changeInput(content){
+	    availableTags = content.split("<br>");
+	    $("#findAddress").autocomplete( "option", "source", availableTags); //<==jquery docs suggest this method
+	    $("#findAddress").autocomplete({ source: availableTags }); 
+
+	    $("#findAddress").autocomplete({
+	        source: availableTags
+	    });
+	}
+
+	$(function() {
+		$("#findAddress").autocomplete({
+			source: ["East one", "East two", "East Three", "West one", "West three"],
+			minlenght: 2
+		});
+	});
+ */	
+	jQuery(function() {
+		
+	    jQuery("#findAddress").autocomplete({
+	        source: function(request, response) {
+	        	
+	        	var input_txt = $('#findAddress').val();
+	        	//var url = "https://australianaddresses.net.au/d?q="+input_txt+"jsoncallback=?";
+	        	var url = "https://australianaddresses.net.au/d?q="+input_txt;
+	        	
+	        	// Fetch preflight request
+	        	/* var myHeaders = new Headers();
+	        	myHeaders.append("Accept", "application/json");
+	        	myHeaders.append("Content-Type", "application/json");
+	        	myHeaders.append("Access-Control-Allow-Origin", "*");
+	        	fetch(url, {
+	        	    headers: myHeaders
+	        	}).then(function (response) {
+	        	    return response.json();
+	        	}).then(function (json) {
+	        	    console.log(json);
+	        	}); */
+	        	
+	        	var sqValue = [];
+	            jQuery.ajax({
+	                type: "GET",
+	                dataType: 'jsonp',
+	                contentType: "application/json; charset=utf-8",
+	                crossDomain: true,
+	                //url: "http://suggestqueries.google.com/complete/search?hl=en&ds=yt&client=youtube&hjson=t&cp=1",
+	                url: url,
+	                
+	                success: function (result, status, xhr) {
+	                    console.log(result);
+	                },
+	                /*  success: function(data) {
+	                    console.log(data);
+	                }, */
+	                error: function(res) {
+	                    console.log("There was an error: " + JSON.stringify(res));
+	                    console.log(res);
+	                    //$('#' + divname).html(res.responseText);
+	                }
+	                /* error: function(xhr, textStatus, error) {
+	                	console.log(xhr);
+	                    console.log(xhr.responseText);
+	                    console.log(xhr.statusText);
+	                    console.log(textStatus);
+	                    console.log(error);
+	                } */
+	            });
+	        }
+	    });
+	});
+	 
+</script>
+</body>
