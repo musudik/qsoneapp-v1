@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">QSONE Acknowledgment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+    <b>Dear <span th:text="${owner}"></span>,</b>
+    <p>
+      You property at <b><span th:text="${address}"></span></b> request has been successfully registered.
+      <br/><br/>
+      Please note your the job request Id  <b><span th:text="${jobId}"></span></b>
+      <br/>
+      We will process your request as early as possible and get back to you.
+    </p>
+    <p>
+         <p>
+      		<!-- <img  id="logo" align="left" alt="QSONE"  width="10%"  src="qsone.png" th:src="|cid:${qsonelogo}|" /> -->
+        </p>
+    <p>
+      Regards, <br />
+      <em><b>QSONE Team</b></em><br/>
+      <em>www.qsone.com.au</em>
+    </p>
+  </body>
+</html>

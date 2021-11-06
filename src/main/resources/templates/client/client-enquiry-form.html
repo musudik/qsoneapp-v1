@@ -108,6 +108,19 @@
                       <input list="addresses" type="text" id="findAddress" class="form-control form-control-lg" th:field="*{findAddress}" placeholder="Type address and select" />
                       <datalist id="addresses">			  
 					  </datalist>
+                  	</div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-1 mb-4 pb-2">
+                      <div class="form-outline">
+                      	<input id="useAddress" type="checkbox" class="btn btn-light btn-lg" data-mdb-ripple-color="dark"/>
+                      </div>
+                    </div>
+                    <div class="col-md-9 mb-4 pb-2">
+                      <div class="form-outline">
+	                    <label class="form-label" for="form3Examplev4">Use the above address</label>
+                      </div>
                     </div>
                   </div>
                   
@@ -122,13 +135,6 @@
                       <div class="form-outline">
                         <label class="form-label" for="form3Examplev2">Street Name</label>
                         <input list="browsers" type="text" id="streetName" class="form-control form-control-lg" th:field="*{streetName}" required  placeholder="Enter Street Name" />
-                        <datalist id="browsers">
-						  <option value="Edge">
-						  <option value="Firefox">
-						  <option value="Chrome">
-						  <option value="Opera">
-						  <option value="Safari">
-						</datalist>
                       </div>
                     </div>
                   </div>
@@ -309,10 +315,9 @@
 				url : window.location + "/findAddress?address="+input_txt,
 				success: function(result){
 					$("#addresses").empty();
-					for (var i=0;i<result.length;++i)
-                    {
+					for (var i=0;i<result.length;++i) {
 						availableAddresses[i] = result[i];
-						console.log("# "+i +": "+availableAddresses[i]);
+						//console.log("# "+i +": "+availableAddresses[i]);
 						$("#addresses").append("<option data-value=\"."+ result[i]+"\" value='" + result[i] + "'></option>");
                     }
 				},
@@ -323,14 +328,22 @@
 	    }
 	});
 	
-	$("#addresses").change(function(){
-		console.log($('#findAddress').val());
+	$("#useAddress").change(function(){
+		var input_txt = $('#findAddress').val();
+		 if (input_txt == '') {
+			 $( "#useAddress" ).prop( "checked", false );
+			 alert('Please find address');
+		 } else {
+			 var address = input_txt.split(' ');
+			$("#flatNumber").val(address[0]);
+			$("#streetName").val(address[1] +' '+address[2]);
+			$("#suburb").val(address[3]);
+			$("#state").val(address[4]);
+			$("#postcode").val(address[5]);
+			$("#country").val('Australia');
+		 }
 	});
 	
-	$('#addresses').on('change', function() {
-		var input_txt = $('#findAddress').val();
-		
-		alert(input_txt);
-	});
+	
 </script>
 </body>

@@ -81,6 +81,7 @@ public class CustomWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 "/js/**",
                 "/fonts/**",
                 "../libs/**",
+                "/mail-templates/**",
                 "/images/**"
         );
     }
