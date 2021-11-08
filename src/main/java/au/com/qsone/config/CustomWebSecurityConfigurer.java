@@ -71,8 +71,8 @@ public class CustomWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
           .and().csrf().disable();
-
     }
+    
     public void configure(WebSecurity web) throws Exception {
        // web.ignoring().antMatchers("/resources/static/**").anyRequest();
     	web.ignoring().antMatchers(

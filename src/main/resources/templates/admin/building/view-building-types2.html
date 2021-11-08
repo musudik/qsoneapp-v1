@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout1">
+<head>
+    <title>Building Group Details</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <h1>
+        View Building Types
+        <small>Control panel</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">View Building Types</li>
+    </ol>
+</section>
+<div layout:fragment="content">
+	<form th:action="@{/building/showBuildingTypes}" th:object="${buildingTypeConfig}" method="post" class="form-horizontal">
+	    <div class="row">
+	        <div class="col-md-12">
+	            <!-- Horizontal Form -->
+	            
+	            <div class="box box-info">
+	                <div class="box-header with-border">
+	                    <h3 class="box-title">View Building Types</h3>
+	                </div>
+	                <!-- /.box-header -->
+	                <!-- form start -->
+	                
+	                    <div class="box-body">
+	                        <div class="form-group">
+	                            <label class="col-sm-2 control-label">Building Groups</label>
+	                            <div class="col-sm-4">
+	                                <select id="buildingGroup" name="buildingGroup" class="form-control" th:field="*{buildingGroup}">
+	                                    <option value="">Select...</option>
+	                                    <option  id="selectedGroup"  th:each="group : ${buildingTypeConfig.buildingGroups}" th:value="${group.buildingGroupId}" th:utext="${group.display}"/>
+	                                </select>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    
+	                    <div class="box-body">
+	                        <div class="form-group">
+	                            <label class="col-sm-2 control-label">Building Sub Groups</label>
+	                            <div class="col-sm-4">
+	                                <select class="form-control" th:field="*{buildingSubGroup}">
+	                                    <option value="">Select...</option>
+	                                    <option th:each="subGroup : ${buildingSubGroups}" th:value="${subGroup.buildingSubGroupId}" th:utext="${subGroup.buildingSubGroupName}"/>
+	                                </select>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    
+	                    <div class="box-body">
+	                        <div class="form-group">
+	                            <label class="col-sm-2 control-label">Building Types</label>
+	                            <div class="col-sm-4">
+	                                <select class="form-control" th:field="*{buildingType}">
+	                                    <option value="">Select...</option>
+	                                    <option th:each="type: ${buildingTypes}" th:value="${type.buildingTypeId}" th:utext="${type.buildingTypeName}"/>
+	                                </select>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    
+	                    <!-- /.box-footer -->
+	                
+	            </div>
+	            <!-- /.box -->
+	        </div>
+	    </div>
+    </form>
+    <div class="box-footer center">
+	    <a href="#" class="btn btn-primary btn-xs purple editView" title="Add building group" th:href="@{/building/addBuildingGroup}"><i class="fa fa-plus"></i> Add building group</a>
+	    <a href="#" class="btn btn-primary btn-xs purple editView" title="Add building sub group" th:href="@{/building/addBuildingSubGroup}"><i class="fa fa-plus"></i> Add building sub group</a>
+	    <a href="#" class="btn btn-primary btn-xs purple editView" title="Add building type" th:href="@{/building/addBuildingType}"><i class="fa fa-plus"></i> Add building type</a>
+	</div>
+</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+		alert();
+	});
+	
+	$('#buildingGroup').on('input', function() {
+		var groupId = $("#buildingGroup").val();
+        alert(groupId);
+	});
+</script>
+</body>
+</html>

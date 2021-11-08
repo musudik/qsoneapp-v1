@@ -8,53 +8,51 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "PROPERTY")
+@Table(name = "PROPERTY", uniqueConstraints={@UniqueConstraint(columnNames = {"flat_number" , "street_name", "suburb", "state", "postcode"})})
+@SequenceGenerator(name="seq_property", initialValue=5000, allocationSize=1)
 public class Property extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="seq_property")
 	Long id;
 	
-	@Column(name = "propertyType", nullable = false)
-	//@NotEmpty(message = "Property Type can't be empty!")
+	@Column(name = "property_type", nullable = false)
     private String propertyType;
 	
 	@Column(name = "owner", nullable = false)
-	//@NotEmpty(message = "Property Owner can't be empty!")
     private String owner;
 	
-	@Column(name = "forAndBehalfOfOwner", nullable = true)
+	@Column(name = "for_and_behalf_of_owner", nullable = true)
     private String forAndBehalfOfOwner;
 	
-    @Column(name = "nameOfAuthorizedPerson", nullable = true)
+    @Column(name = "name_of_authorized_person", nullable = true)
     private String nameOfAuthorizedPerson;
     
 	@Column(name = "phone", nullable = true)
     private String phone;
     
 	@Column(name = "mobile", nullable = false)
-	//@NotEmpty(message = "Mobile can't be empty!")
 	private String mobile;
 	
 	
     @Column(name = "email", nullable = false)
-    //@NotEmpty(message = "Email can't be empty!")
     private String email;
     
     @Column(name = "comments", nullable = true)
     private String comments;
     
     //Address Details:
-    @Column(name = "flatNumber", nullable = false)
+    @Column(name = "flat_number", nullable = false)
     private String flatNumber;
-    @Column(name = "streetName", nullable = false)
+    @Column(name = "street_name", nullable = false)
     private String streetName;
     @Column(name = "suburb", nullable = false)
     private String suburb;
@@ -66,32 +64,38 @@ public class Property extends BaseEntity implements Serializable {
     private String country;
     
     //Cost Details:
-    @Column(name = "purchasePrice", nullable = true)
+    @Column(name = "purchase_price", nullable = true)
     private String purchasePrice;
-    @Column(name = "stampDuty", nullable = true)
+    @Column(name = "stamp_duty", nullable = true)
     private String stampDuty;
-    @Column(name = "legalCosts", nullable = true)
+    @Column(name = "legal_costs", nullable = true)
     private String legalCosts;
-    @Column(name = "additionalExpenses", nullable = true)
+    @Column(name = "additional_expenses", nullable = true)
     private String additionalExpenses;
-    @Column(name = "originalBuildingCost", nullable = true)
+    @Column(name = "original_building_cost", nullable = true)
     private String originalBuildingCost;
     
     //Property TimeLine Details:
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "construction_start_date", nullable = true)
 	private Date constructionStart;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "construction_end_date", nullable = true)
     private Date constructionEnd;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "date_of_contract_exchange", nullable = true)
 	private Date dateOfContractExchange;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "date_settlement", nullable = true)
     private Date dateSettlement;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "first_lease_date", nullable = false)
 	private Date firstLeaseDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "first_taxable_end_date", nullable = false)
 	private Date firstTaxableEndDate;
 	
-	@Column(name = "jobId", nullable = true)
+	@Column(name = "job_id", nullable = true)
 	private Long jobId;
 
 	

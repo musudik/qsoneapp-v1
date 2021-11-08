@@ -1,5 +1,6 @@
 package au.com.qsone.web.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
@@ -11,7 +12,8 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author musudi kiran
  *
  */
-public class ClientPropertyDto {
+public class ClientPropertyDto implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	@NotEmpty(message = "Property Type can't be empty!")
     private String propertyType;

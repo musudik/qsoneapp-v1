@@ -26,7 +26,7 @@
 -->
 				<li class="active"><a th:href="@{/job/list}"><i class="fa fa-circle-o"></i> Jobs</a></li>
 				<li class="active"><a th:href="@{/property/list}"><i class="fa fa-circle-o"></i> Properties</a></li>
-                <!-- <li><a th:href="@{/producttype/list}"><i class="fa fa-circle-o"></i> Product Type</a></li> -->
+				<li class="active"><a th:href="@{/building/viewBuildingTypes}"><i class="fa fa-circle-o"></i> Building Types</a></li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><i class="fa fa-circle-o"></i> Logout</a></li>
             </ul>
         </li>

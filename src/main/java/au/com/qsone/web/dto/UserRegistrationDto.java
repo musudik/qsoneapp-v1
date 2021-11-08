@@ -1,7 +1,9 @@
 package au.com.qsone.web.dto;
 
+import java.io.Serializable;
 
-public class UserRegistrationDto {
+public class UserRegistrationDto implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	//@NotEmpty(message = "First name can't be empty!")
 	private String firstName;

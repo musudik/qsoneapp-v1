@@ -9,16 +9,17 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "JOB")
+@Table(name = "JOB", uniqueConstraints={@UniqueConstraint(columnNames = {"property_id"})})
+@SequenceGenerator(name="seq_job", initialValue=50000, allocationSize=1)
 public class Job extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="seq_job")
 	Long id;
 	
 	@NotEmpty(message = "Job Type can't be empty!")
-	@Column(name = "jobType", nullable = false)
+	@Column(name = "job_type", nullable = false)
     private String jobType;
 	
 	@NotEmpty(message = "Property Status can't be empty!")
@@ -29,25 +30,25 @@ public class Job extends BaseEntity implements Serializable {
     private Boolean inspected;
 	
 	@NotEmpty(message = "Property can't be empty!")
-	@Column(name = "propertyId", nullable = false)
+	@Column(name = "property_id", nullable = false)
     private String propertyId;
 	
-	@Column(name = "mainAccessContactType", nullable = true)
+	@Column(name = "main_access_contact_type", nullable = true)
     private String mainAccessContactType;
-	@Column(name = "mainAccessContactName", nullable = true)
+	@Column(name = "main_access_contact_name", nullable = true)
     private String mainAccessContactName;
-	@Column(name = "mainAccessContactPhone", nullable = true)
+	@Column(name = "main_access_contact_phone", nullable = true)
     private String mainAccessContactPhone;
 	
-	@Column(name = "assignedDate", nullable = true)
+	@Column(name = "assigned_date", nullable = true)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date assignedDate;
 	
-	@Column(name = "inspectionDate", nullable = true)
+	@Column(name = "inspection_date", nullable = true)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date inspectionDate;
 	
-	@Column(name = "dueToDepreciator", nullable = true)
+	@Column(name = "due_to_depreciator", nullable = true)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dueToDepreciator;
 	

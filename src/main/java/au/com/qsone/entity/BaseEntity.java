@@ -10,15 +10,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 @MappedSuperclass
 public class BaseEntity {
 	
-	@Column(name = "createdDate", nullable = false)
+	@Column(name = "created_date", nullable = true)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createdDate;
-	@Column(name = "updatedDate", nullable = true)
+	@Column(name = "updated_date", nullable = true)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updatedDate;
-	@Column(name = "createdBy", nullable = false)
+	@Column(name = "created_by", nullable = true)
     private String createdBy;
-	@Column(name = "updatedBy", nullable = true)
+	@Column(name = "updated_by", nullable = true)
     private String updatedBy;
 	
 	/**

@@ -1,6 +1,9 @@
 package au.com.qsone.web.dto;
 
-public class AddressFinderObject {
+import java.io.Serializable;
+
+public class AddressFinderObject implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private String id;
 	private String highlighted;
