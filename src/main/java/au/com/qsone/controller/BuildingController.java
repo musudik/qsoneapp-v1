@@ -1,7 +1,5 @@
 package au.com.qsone.controller;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +43,7 @@ public class BuildingController {
     private static final String list_redirect_building_type="redirect:/building/listBuilding-type";
     
     private static final String view_building_types="/admin/building/view-building-types";
+    private static final String redirect_view_building_types="redirect:/building/viewBuildingTypes";
     
     @Autowired
     private au.com.qsone.service.BuildingService buildingService;
@@ -103,7 +102,8 @@ public class BuildingController {
         	buildingGroup.setUpdatedDate(new Date());
         }
         buildingService.saveBuildingGroup(buildingGroup);
-        return list_redirect_building_group+"?success";
+        //return list_redirect_building_group+"?success";
+        return redirect_view_building_types;
     }
     
     @PostMapping("/saveStayBuildingGroup")
@@ -168,7 +168,9 @@ public class BuildingController {
         	buildingSubGroup.setUpdatedDate(new Date());
         }
         buildingService.saveBuildingSubGroup(buildingSubGroup);
-        return list_redirect_building_sub_group+"?success";
+        //return list_redirect_building_sub_group+"?success";
+        
+        return redirect_view_building_types;
     }
     
     @PostMapping("/saveStayBuildingSubGroup")
@@ -234,7 +236,8 @@ public class BuildingController {
         	buildingType.setUpdatedDate(new Date());
         }
         buildingService.saveBuildingType(buildingType);
-        return list_redirect_building_type+"?success";
+        //return list_redirect_building_type+"?success";
+        return redirect_view_building_types;
     }
     
     @PostMapping("/saveStayBuildingType")

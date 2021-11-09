@@ -15,7 +15,7 @@
 				sel.empty();
 	  	    	sel1.empty();
 				var groupId = $("#buildingGroup").val();
-		        alert(groupId);
+		        //alert(groupId);
 		        if (groupId.length != '') {
 		  	      $.ajax({
 		  				type : "GET",
@@ -29,6 +29,11 @@
 		  				    	var pair =  result[i].split(']');
 		  				      sel.append('<option value="' + pair[0].substring(1,pair[0].length) + '">' + result[i] + '</option>');
 		  				    }
+		  				    
+		  				  $('#addBuildingSubGroup').attr('disabled', false);
+		  				  $('#addBuildingSubGroup').attr('href', '/building/addBuildingSubGroup/' + groupId);
+		  				  $('#editBuildingGroup').attr('disabled', false);
+		  				  $('#editBuildingGroup').attr('href', '/building/editBuildingGroup/' + groupId);
 		  				},
 		  				error : function(e) {
 		  					console.log("ERROR: ", e);
@@ -37,6 +42,10 @@
 		  	    } else {
 		  	    	sel.append('<option value="">Select</option>');
 		  	    	sel1.append('<option value="">Select</option>');
+		  	    	$('#addBuildingSubGroup').attr('disabled', true);
+		  	    	$('#addBuildingSubGroup').attr('href', '/building/addBuildingSubGroup/' + groupId);
+		  	    	$('#editBuildingGroup').attr('disabled', true);
+		  	    	$('#editBuildingGroup').attr('href', '/building/editBuildingGroup/' + groupId);
 		  	    }
 			});
 			
@@ -45,7 +54,7 @@
 			
 			$('#buildingSubGroup').on('change', function() {
 				var groupId = $("#buildingSubGroup").val();
-		        alert(groupId);
+		        //alert(groupId);
 		        if (groupId.length != '') {
 		         sel1.empty();
 		  	      $.ajax({
@@ -57,6 +66,11 @@
 		  				    	var pair =  result[i].split(']');
 		  				      sel1.append('<option value="' + pair[0].substring(1,pair[0].length) + '">' + result[i] + '</option>');
 		  				    }
+		  				    
+		  				  $('#addBuildingType').attr('disabled', false);
+		  				  $('#addBuildingType').attr('href', '/building/addBuildingType/' + groupId);
+		  				  $('#editBuildingSubGroup').attr('disabled', false);
+		  				  $('#editBuildingSubGroup').attr('href', '/building/editBuildingGroup/' + groupId);
 		  				},
 		  				error : function(e) {
 		  					console.log("ERROR: ", e);
@@ -64,6 +78,10 @@
 		  			});	
 		  	    } else {
 		  	    	sel1.append('<option value="-1">Select</option>');
+		  	    	$('#addBuildingType').attr('disabled', true);
+		  	    	$('#addBuildingType').attr('href', '/building/addBuildingSubGroup/' + groupId);
+		  	    	$('#editBuildingSubGroup').attr('disabled', true);
+		  	    	$('#editBuildingSubGroup').attr('href', '/building/editBuildingGroup/' + groupId);
 		  	    }
 			});
 		});
@@ -96,35 +114,47 @@
 	                
 	                    <div class="box-body">
 	                        <div class="form-group">
-	                            <label class="col-sm-2 control-label">Building Groups</label>
-	                            <div class="col-sm-4">
-	                                <select id="buildingGroup" name="buildingGroup" class="form-control" th:field="*{buildingGroup}">
-	                                    <option value="">Select...</option>
-	                                    <option  id="selectedGroup"  th:each="group : ${buildingTypeConfig.buildingGroups}" th:value="${group.buildingGroupId}" th:utext="${group.display}"/>
-	                                </select>
+	                        	<div class="row">
+		                            <label class="col-sm-2 control-label">Building Groups</label>
+		                            <div class="col-sm-4">
+		                                <select id="buildingGroup" name="buildingGroup" class="form-control" th:field="*{buildingGroup}">
+		                                    <option value="">Select...</option>
+		                                    <option  id="selectedGroup"  th:each="group : ${buildingTypeConfig.buildingGroups}" th:value="${group.buildingGroupId}" th:utext="${group.display}"/>
+		                                </select>
+		                            </div>
+		                            <a id="addBuildingGroup" href="#" class="btn btn-primary btn-xs purple editView" title="Add building group" th:href="@{/building/addBuildingGroup}"><i class="fa fa-plus"></i> Add</a>
+		                            <a id="editBuildingGroup" disabled href="#" class="btn btn-primary btn-xs edit editView" title="Edit building group" th:href="@{/building/editBuildingGroup}"><i class="fa fa-edit"></i> Edit</a>
 	                            </div>
 	                        </div>
 	                    </div>
 	                    
 	                    <div class="box-body">
 	                        <div class="form-group">
-	                            <label class="col-sm-2 control-label">Building Sub Groups</label>
-	                            <div class="col-sm-4">
-	                                <select id="buildingSubGroup" class="form-control" th:field="*{buildingSubGroup}">
-	                                    <option value="">Select...</option>
-	                                </select>
+	                        	<div class="row">
+		                            <label class="col-sm-2 control-label">Building Sub Groups</label>
+		                            <div class="col-sm-4">
+		                                <select id="buildingSubGroup" class="form-control" th:field="*{buildingSubGroup}">
+		                                    <option value="">Select...</option>
+		                                </select>
+		                            </div>
+		                            <a id="addBuildingSubGroup" disabled href="#" class="btn btn-primary btn-xs purple editView" title="Add building sub group" th:href="@{/building/addBuildingSubGroup}"><i class="fa fa-plus"></i> Add</a>
+		                            <a id="editBuildingSubGroup" disabled href="#" class="btn btn-primary btn-xs edit editView" title="Edit building sub group" th:href="@{/building/editBuildingSubGroup}"><i class="fa fa-edit"></i> Edit</a>
 	                            </div>
 	                        </div>
 	                    </div>
 	                    
 	                    <div class="box-body">
 	                        <div class="form-group">
-	                            <label class="col-sm-2 control-label">Building Types</label>
-	                            <div class="col-sm-4">
-	                                <select id="buildingType" class="form-control" th:field="*{buildingType}">
-	                                    <option value="">Select</option>
-	                                    <option th:each="type: ${buildingTypes}" th:value="${type.buildingTypeId}" th:utext="${type.buildingTypeName}"/>
-	                                </select>
+	                        	<div class="row">
+		                            <label class="col-sm-2 control-label">Building Types</label>
+		                            <div class="col-sm-4">
+		                                <select id="buildingType" class="form-control" th:field="*{buildingType}">
+		                                    <option value="">Select</option>
+		                                    <option th:each="type: ${buildingTypes}" th:value="${type.buildingTypeId}" th:utext="${type.buildingTypeName}"/>
+		                                </select>
+		                            </div>
+		                            <a id="addBuildingType" disabled href="#" class="btn btn-primary btn-xs purple editView" title="Add building type" th:href="@{/building/addBuildingType}"><i class="fa fa-plus"></i> Add</a>
+		                            <a id="editBuildingType" disabled href="#" class="btn btn-primary btn-xs edit editView" title="Edit building type" th:href="@{/building/editBuildingType}"><i class="fa fa-edit"></i> Edit</a>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -135,12 +165,7 @@
 	            <!-- /.box -->
 	        </div>
 	    </div>
-    </form>
-    <div class="box-footer center">
-	    <a href="#" class="btn btn-primary btn-xs purple editView" title="Add building group" th:href="@{/building/addBuildingGroup}"><i class="fa fa-plus"></i> Add building group</a>
-	    <a href="#" class="btn btn-primary btn-xs purple editView" title="Add building sub group" th:href="@{/building/addBuildingSubGroup}"><i class="fa fa-plus"></i> Add building sub group</a>
-	    <a href="#" class="btn btn-primary btn-xs purple editView" title="Add building type" th:href="@{/building/addBuildingType}"><i class="fa fa-plus"></i> Add building type</a>
-	</div>
+	    </form>
 </div>
 </body>
 </html>
