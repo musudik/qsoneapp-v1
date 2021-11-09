@@ -77,6 +77,7 @@ public class CustomWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
        // web.ignoring().antMatchers("/resources/static/**").anyRequest();
     	web.ignoring().antMatchers(
     			"https://australianaddresses.net.au/**",
+    			"/h2-console/**",
                 "/css/**",
                 "/js/**",
                 "/fonts/**",
