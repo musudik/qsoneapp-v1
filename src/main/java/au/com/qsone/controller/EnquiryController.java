@@ -58,7 +58,7 @@ public class EnquiryController {
         labels.put("send", props);
         
     }
-	private static final String client_product_info_template="/client/client-enquiry-form.html";
+	private static final String client_product_info_template="client/client-enquiry-form.html";
 	
 	@Autowired
 	private au.com.qsone.service.EnquiryService enquiryService;

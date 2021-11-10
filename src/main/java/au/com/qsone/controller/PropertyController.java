@@ -23,8 +23,8 @@ import au.com.qsone.entity.Property;
 @RequestMapping("/property")
 public class PropertyController {
 	
-	private static final String add_edit_template="/admin/property/add-edit-property";
-    private static final String list_template="/admin/property/list-property";
+	private static final String add_edit_template="admin/property/add-edit-property";
+    private static final String list_template="admin/property/list-property";
     private static final String list_redirect="redirect:/property/list";
 
     @Autowired

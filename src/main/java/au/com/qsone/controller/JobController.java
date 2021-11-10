@@ -32,8 +32,8 @@ public class JobController {
     @Autowired
     private au.com.qsone.service.PropertyService propertyService;
 
-    private String add_edit_template="/admin/job/add-edit-job";
-    private String list_template="/admin/job/list-job";
+    private String add_edit_template="admin/job/add-edit-job";
+    private String list_template="admin/job/list-job";
     private String list_redirect="redirect:/job/list";
 
 

@@ -29,20 +29,20 @@ import au.com.qsone.web.dto.BuildingTypeConfig;
 @RequestMapping("/building")
 public class BuildingController {
 
-	private static final String add_edit_template_building_group="/admin/building/add-edit-building-group";
-    private static final String list_template_building_group="/admin/building/list-building-group";
+	private static final String add_edit_template_building_group="admin/building/add-edit-building-group";
+    private static final String list_template_building_group="admin/building/list-building-group";
     private static final String list_redirect_building_group="redirect:/building/listBuilding-group";
     
-    private static final String add_edit_template_building_sub_group="/admin/building/add-edit-building-sub-group";
-    private static final String list_template_building_sub_group="/admin/building/list-building-sub-group";
+    private static final String add_edit_template_building_sub_group="admin/building/add-edit-building-sub-group";
+    private static final String list_template_building_sub_group="admin/building/list-building-sub-group";
     private static final String list_redirect_building_sub_group="redirect:/building/listBuilding-sub-group";
     
     
-	private static final String add_edit_template_building_type="/admin/building/add-edit-building-type";
-    private static final String list_template_building_type="/admin/building/list-building-type";
+	private static final String add_edit_template_building_type="admin/building/add-edit-building-type";
+    private static final String list_template_building_type="admin/building/list-building-type";
     private static final String list_redirect_building_type="redirect:/building/listBuilding-type";
     
-    private static final String view_building_types="/admin/building/view-building-types";
+    private static final String view_building_types="admin/building/view-building-types";
     private static final String redirect_view_building_types="redirect:/building/viewBuildingTypes";
     
     @Autowired
