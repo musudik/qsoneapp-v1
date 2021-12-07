@@ -2,11 +2,22 @@ package au.com.qsone.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import au.com.qsone.web.dto.JobState;
 
 @Entity
 @Table(name = "JOB", uniqueConstraints={@UniqueConstraint(columnNames = {"property_id"})})
@@ -51,6 +62,9 @@ public class Job extends BaseEntity implements Serializable {
 	@Column(name = "due_to_depreciator", nullable = true)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dueToDepreciator;
+	
+	@Transient
+	private List<JobState> nextActions;
 	
 	/**
 	 * @return the propertyId
@@ -184,6 +198,18 @@ public class Job extends BaseEntity implements Serializable {
 	 */
 	public void setDueToDepreciator(Date dueToDepreciator) {
 		this.dueToDepreciator = dueToDepreciator;
+	}
+	/**
+	 * @return the nextActions
+	 */
+	public List<JobState> getNextActions() {
+		return nextActions;
+	}
+	/**
+	 * @param nextActions the nextActions to set
+	 */
+	public void setNextActions(List<JobState> nextActions) {
+		this.nextActions = nextActions;
 	}
 }
 	

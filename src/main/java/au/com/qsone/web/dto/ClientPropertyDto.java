@@ -14,6 +14,8 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class ClientPropertyDto implements Serializable {
 	private static final long serialVersionUID = 1L;
+	public String status = "ENQUIRY_CREATE";
+    public String jobType = "Enquiry";
 	
 	@NotEmpty(message = "Property Type can't be empty!")
     private String propertyType;
@@ -28,6 +30,7 @@ public class ClientPropertyDto implements Serializable {
     private String email;
     private String comments;
     private String improvements;
+    
 
     //Address Details:
     private String findAddress;
@@ -390,5 +393,29 @@ public class ClientPropertyDto implements Serializable {
 	 */
 	public void setFirstTaxableEndDate(Date firstTaxableEndDate) {
 		this.firstTaxableEndDate = firstTaxableEndDate;
+	}
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	/**
+	 * @return the jobType
+	 */
+	public String getJobType() {
+		return jobType;
+	}
+	/**
+	 * @param jobType the jobType to set
+	 */
+	public void setJobType(String jobType) {
+		this.jobType = jobType;
 	}
 }

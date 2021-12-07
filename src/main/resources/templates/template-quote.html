@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">QSONE Quote</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+    <b>Dear <span th:text="${owner}"></span>,</b>
+    <p>
+      Please find the quotation for the property at <b><span th:text="${address}"></span></b>.
+      <br/><br/>
+      For your reference the job request Id is  <b><span th:text="${jobId}"></span></b>
+      <br/>
+      If you accept the quote please do reply over the email.
+    </p>
+    <p>
+         <p>
+      		<!-- <img  id="logo" align="left" alt="QSONE"  width="10%"  src="qsone.png" th:src="|cid:${qsonelogo}|" /> -->
+        </p>
+    <p>
+      Regards, <br />
+      <em><b>QSONE Team</b></em><br/>
+      <em>www.qsone.com.au</em>
+    </p>
+  </body>
+</html>

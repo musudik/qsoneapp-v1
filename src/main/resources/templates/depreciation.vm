@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<HTML>
+
+<HEAD>
+    <TITLE>Depreciation Table!</TITLE>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th,
+        td {
+            padding: 2px;
+            text-align: left;
+            font-size: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</HEAD>
+
+<BODY>
+	<!--img src="https://www.w3schools.com/images/w3schools_green.jpg" alt="W3Schools.com" style="width:104px;height:142px;"></img-->
+    <center>
+        <font size="3" color="red">
+            <B>Depriciation Report</B>
+        </font>
+        <table>
+            <tr>
+                <td><b>Job Number</b></td><td>$property.jobNumber</td>
+                <td></td><td></td>
+            </tr>
+            <tr>
+                <td><b>Property Address</b></td><td>$property.propertyAddress</td>
+                <td><b>Region</b></td><td>$property.region</td>
+            </tr>
+            <tr>
+                <td><b>Floor Area</b></td><td>$property.floorArea</td>
+                <td><b>Purchase Price</b></td><td>$property.purchasePrice</td>
+            </tr>
+            <tr>
+                <td><b>Report Calculation Year</b></td><td>$property.reportCalculationYear</td>
+                <td><b>Year of Construction</b></td><td>$property.yearOfConstruction</td>
+            </tr>
+            <tr>
+                <td><b>Date of Contract Exchange</b></td><td>$property.dateOfContractExchange</td>
+                <td><b>First Lease Date</b></td><td>$property.firstLeaseDate</td>
+            </tr>
+            
+        </table>
+        <BR/> 
+        #set( $count = 1 )
+        <table style="width:100%">
+            <tr>
+                <th>Year</th>
+                <th>Building Cost</th>
+                <th>Depreciation Amount</th>
+            </tr>
+            #foreach( $result in $results )
+            <tr>
+                <TD>$result.year</TD>
+                <TD>$result.buildingCost</TD>
+                <TD>$result.depreciationAmount</TD>
+            </tr>
+            #set( $count = $count + 1 ) #end
+        </table>
+    </center>
+</BODY>
+
+</HTML>

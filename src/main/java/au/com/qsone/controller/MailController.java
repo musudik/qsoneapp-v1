@@ -28,8 +28,8 @@ public class MailController {
     @Autowired
     public EmailService emailService;
 
-    @Value("${attachment.invoice}")
-    private String attachmentPath;
+//    @Value("${attachment.invoice}")
+//    private String attachmentPath;
 
     private static final Map<String, Map<String, String>> labels;
 

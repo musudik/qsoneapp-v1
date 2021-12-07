@@ -1,0 +1,135 @@
+id: 1001
+state: "ENQUIRY_CREATE"
+display: "createEnquiry"
+nextStates: 
+  - id: 1002
+    state: "QUOTE_SEND"
+    display: "Send Quote"
+  - id: 1003
+    state: "ENQUIRY_REJECT"
+    display: "Reject Enquiry"
+---
+id: 1002
+state: "QUOTE_SEND"
+display: "Send Quote"
+nextStates: 
+  - id: 1004
+    state: "QUOTE_ACCEPT"
+    display: "Accept Quote"
+  - id: 1005
+    state: "QUOTE_REJECT"
+    display: "Reject Quote"
+---
+id: 1003
+state: "ENQUIRY_REJECT"
+display: "Reject Enquiry"
+nextStates: 
+  - id: 1006
+    state: "ENQUIRY_CLOSED"
+    display: "Close Enquiry"
+    reason: "ENQUIRY_REJECT"
+---
+id: 1004
+state: "QUOTE_ACCEPT"
+display: "Accept Quote"
+nextStates: 
+  - id: 1007
+    state: "INVOICE_SEND"
+    display: "Send Invoice"
+---
+id: 1005
+state: "QUOTE_REJECT"
+display: "Reject Quote"
+nextStates: 
+  - id: 1006
+    state: "ENQUIRY_CLOSED"
+    display: "Close Enquiry"
+    reason: "QUOTE_REJECT"
+---
+id: 1007
+state: "INVOICE_SEND"
+display: "Send Invoice"
+nextStates: 
+  - id: 1008
+    state: "PROPERTY_ACCESS"
+    display: "Access Property"
+---
+id: 1008
+state: "PROPERTY_ACCESS"
+display: "Access Property"
+nextStates: 
+  - id: 1009
+    state: "JOB_CREATE"
+    display: "Create Job"
+---
+id: 1009
+state: "JOB_CREATE"
+display: "Create Job"
+nextStates: 
+  - id: 1010
+    state: "JOB_INSPECT"
+    display: "Inspect Job"
+---
+id: 1010
+state: "JOB_INSPECT"
+display: "Inspect Job"
+nextStates: 
+  - id: 1011
+    state: "JOB_DATA_CAPTURE"
+    display: "Data Capture"
+---
+id: 1011
+state: "JOB_DATA_CAPTURE"
+display: "Data Capture"
+nextStates: 
+  - id: 1012
+    state: "JOB_DATA_REVIEW"
+    display: "Review Data"
+---
+id: 1012
+state: "JOB_DATA_REVIEW"
+display: "Review Data"
+nextStates: 
+  - id: 1013
+    state: "JOB_DATA_AUTHORIZE"
+    display: "Authorize Data"
+---
+id: 1013
+state: "JOB_DATA_AUTHORIZE"
+display: "Authorize Data"
+nextStates: 
+  - id: 1014
+    state: "DEPRICIATION_SCHEDULE_CREATE"
+    display: "Depriciation Schedule"
+---
+id: 1014
+state: "DEPRICIATION_SCHEDULE_CREATE"
+display: "Depriciation Schedule"
+nextStates: 
+  - id: 1015
+    state: "DEPRICIATION_SCHEDULE_ANALYSE"
+    display: "Analyse Dep Schedule"
+---
+id: 1015
+state: "DEPRICIATION_SCHEDULE_ANALYSE"
+display: "Analyse Dep Schedule"
+nextStates: 
+  - id: 1016
+    state: "PAYMENT_RECEIVED"
+    display: "Received Payment"
+---
+id: 1016
+state: "PAYMENT_RECEIVED"
+display: "Received Payment"
+nextStates: 
+  - id: 1017
+    state: "REPORT_CREATE"
+    display: "Create Report"
+---
+id: 1017
+state: "REPORT_CREATE"
+display: "Create Report"
+nextStates: 
+  - id: 1018
+    state: "REPORT_SENT"
+    display: "Send Report"

@@ -1,6 +1,10 @@
 package au.com.qsone.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +16,8 @@ import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -41,12 +50,18 @@ import au.com.qsone.mapper.PropertyMapper;
 import au.com.qsone.service.EmailService;
 import au.com.qsone.web.dto.AddressFinderObject;
 import au.com.qsone.web.dto.ClientPropertyDto;
+import au.com.qsone.web.dto.JobState;
 import au.com.qsone.web.dto.MailObject;
 
 @Controller
 public class EnquiryController {
 	
+	private final static Logger logger = LoggerFactory.getLogger(EnquiryController.class);
+	
 	private static final Map<String, Map<String, String>> labels;
+	
+    private static final Map<String, JobState> jobStates;
+	
 	static {
         labels = new HashMap<>();
 
@@ -57,7 +72,21 @@ public class EnquiryController {
         props.put("additionalInfo", "");
         labels.put("send", props);
         
+        
+        jobStates = new HashMap<String, JobState>();
+        Yaml yaml = new Yaml(new Constructor(JobState.class));
+		try {
+			File file = ResourceUtils.getFile("classpath:state.yml");
+			InputStream inputStream = new FileInputStream(file);
+	        for (Object object : yaml.loadAll(inputStream)) {
+	        	JobState js = (JobState) object;
+	        	jobStates.put(js.getState(), js);
+	        }
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
     }
+	
 	private static final String client_product_info_template="client/client-enquiry-form.html";
 	
 	@Autowired
@@ -89,6 +118,7 @@ public class EnquiryController {
 	
 	@PostMapping("/saveEnquiry")
     public String saveEnquiry(@Valid @ModelAttribute("property") ClientPropertyDto clientPropertyDto, BindingResult result, Model model) throws MessagingException, IOException {
+		logger.info("SIZE::"+jobStates.size());
         model.addAttribute("clientPropertyDto", clientPropertyDto);
 
         if(result.hasErrors()){
@@ -98,10 +128,9 @@ public class EnquiryController {
         Property property = PropertyMapper.INSTANCE.dtoToEntity(clientPropertyDto);
         property.setCreatedBy(getCurrentUser());
         property.setCreatedDate(new Date());
-        Long jobId = enquiryService.save(property);
+        Long jobId = enquiryService.save(property, clientPropertyDto);
         
         model.addAttribute("jobId", jobId);
-        //emailService.sendSimpleMessage(clientPropertyDto.getEmail(), "Test QSONE App", "Some Text");
         
         Map<String, Object> templateModel = new HashMap<>();
         templateModel.put("owner", clientPropertyDto.getOwner());
@@ -109,7 +138,7 @@ public class EnquiryController {
         templateModel.put("jobId", jobId);
         templateModel.put("qsonelogo", "/dist/img/qsone.png");
         
-        emailService.sendMessageUsingThymeleafTemplate(clientPropertyDto.getEmail(), "QSONE Property Enquiry Acknowledgement #"+jobId, templateModel);
+        emailService.sendMessageUsingThymeleafTemplate(clientPropertyDto.getEmail(), "QSONE Property Enquiry Acknowledgement #"+jobId, templateModel, "template-thymeleaf");
         
         return "redirect:/enquiry?job="+jobId;
     }
