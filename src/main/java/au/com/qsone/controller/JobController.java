@@ -3,9 +3,12 @@ package au.com.qsone.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,11 +18,13 @@ import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -33,12 +38,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import au.com.qsone.entity.Invoice;
+import au.com.qsone.entity.InvoiceItem;
+import au.com.qsone.entity.Item;
 import au.com.qsone.entity.Job;
 import au.com.qsone.entity.Property;
 import au.com.qsone.service.DepreciationService;
+import au.com.qsone.service.DocxGeneratorService;
 import au.com.qsone.service.EmailService;
 import au.com.qsone.util.MediaTypeUtils;
 import au.com.qsone.web.dto.DepreciationRequest;
@@ -54,7 +65,10 @@ public class JobController {
 	private static final String DEFAULT_FILE_NAME = "DepreciationSummary.pdf";
 	
 	@Autowired
-    public EmailService emailService;
+    private EmailService emailService;
+	
+	@Autowired
+	private DocxGeneratorService docxGenerator;
 	
 	@Autowired
     private DepreciationService depreciationService;
@@ -67,10 +81,15 @@ public class JobController {
     
     @Autowired
     private au.com.qsone.service.PropertyService propertyService;
+    
+    @Value("${docx.dump.location}")
+    private String docxDumpLocation;
 
     private String add_edit_template="admin/job/add-edit-job";
     private String list_template="admin/job/list-job";
     private String list_redirect="redirect:/job/list";
+    private String prepare_quote="redirect:/job/prepare-quote";
+    private String prepare_quote_template="admin/job/prepare-quote";
 	
 	static {
         jobStates = new HashMap<String, JobState>();
@@ -155,32 +174,41 @@ public class JobController {
     }
     
     @GetMapping("/nextAction/{id}/{action}")
-    public String nextAction(@PathVariable("id") long id, @PathVariable("action") String action, Model model) throws MessagingException, IOException {
+    public String nextAction(@PathVariable("id") long id, @PathVariable("action") String action, Model model, RedirectAttributes redirectAttributes) throws MessagingException, IOException {
     	Job job = JobService.get(id);
     	
-    	switch(action){    
+    	switch(action){
+    		case "QUOTE_PREPARE":
+    			redirectAttributes.addFlashAttribute("job", job);
+    	        //return new RedirectView("/poem/success", true);
+    			//redirectAttributes.addAttribute("id", job.getId());
+    			return prepare_quote;
+    			//break;  
 	    	case "QUOTE_SEND":    
 	    	    sendQuote(job);    
 	    		break;  
 	    	case "ENQUIRY_REJECT":    
 	    		rejectEnquiry(job);   
 	    		break;
-	    	case "QUOTE_ACCEPT":    
+	    	case "QUOTE_ACCEPT":
 	    		quoteAccepted(job);   
 	    		break;
-	    	case "QUOTE_REJECT":    
+	    	case "QUOTE_REJECT":  
 	    		rejectQuote(job);   
 	    		break;
-	    	case "ENQUIRY_CLOSED":    
+	    	case "ENQUIRY_CLOSED": 
 	    		closeEnquiry(job);   
 	    		break;
-	    	case "INVOICE_SEND":    
+	    	case "INVOICE_PREPARE": 
+	    		prepareInvoice(job);   
+	    		break;
+	    	case "INVOICE_SEND":
 	    		sendInvoice(job);   
 	    		break;
-	    	case "PROPERTY_ACCESS":    
+	    	case "PROPERTY_ACCESS":  
 	    		accessProperty(job);   
 	    		break;
-	    	case "JOB_CREATE":    
+	    	case "JOB_CREATE":
 	    		createJob(job);   
 	    		break;
 	    	case "JOB_INSPECT":    
@@ -215,12 +243,74 @@ public class JobController {
     	job.setStatus(action);
       	job.setUpdatedBy(getCurrentUser());
        	job.setUpdatedDate(new Date());
-       	
         JobService.save(job);
         return list_redirect+"?success";
     }
     
+    @GetMapping("/prepare-quote")
+    public String prepareQuote(HttpServletRequest request, Invoice invoice, Model model){
+    	
+    	Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
+    	Job job = null;
+        if (inputFlashMap != null) {
+            job = (Job) inputFlashMap.get("job");
+        }
+        invoice.setJobId(job.getId());
+        InvoiceItem invoiceItem = new InvoiceItem();
+        invoiceItem.setItems(JobService.listItems());
+        invoice.getInvoiceItems().add(invoiceItem);
+        invoice.getInvoiceItems().add(invoiceItem);
+        getItems(model);
+        model.addAttribute("invoice", invoice);
+        return prepare_quote_template;
+    }
     
+    private void getItems(Model model) {
+		List<Item> items = JobService.listItems();
+		model.addAttribute("itemsList", items);
+        //model.addAttribute("items", items.stream().collect(Collectors.toMap(i -> i.getItemId(), i -> i.getItemCode())));
+	}
+    
+    @PostMapping("/saveInvoice")
+    public String saveInvoice(@Valid @ModelAttribute("invoice") Invoice invoice, BindingResult result, Model model){
+    	
+        model.addAttribute("invoice", invoice);
+
+        if(result.hasErrors()){
+            return prepare_quote_template;
+        }
+        
+        if (invoice.getInvoiceId() == null) {
+        	invoice.setCreatedBy(getCurrentUser());
+        	invoice.setCreatedDate(new Date());
+        } else {
+        	invoice.setUpdatedBy(getCurrentUser());
+        	invoice.setUpdatedDate(new Date());
+        }
+        JobService.saveInvoice(invoice);
+        return list_redirect+"?success";
+    }
+
+	private void prepareInvoice(Job job) {
+      	job.setUpdatedBy(getCurrentUser());
+       	job.setUpdatedDate(new Date());
+       	String fileName = docxDumpLocation + job.getId() +"_"+ LocalDate.now()+".docx";
+       	byte[] docBytes = null;
+       	try {
+       		docBytes = docxGenerator.generateDocxFileFromTemplate("template.docx");
+       		File outputFile = new File(fileName);
+       		try (FileOutputStream outputStream = new FileOutputStream(outputFile)) {
+       		    outputStream.write(docBytes);
+       		}
+       		Thread.sleep(10);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+       	
+       	job.setInvoiceFile(fileName);
+       	JobService.save(job);
+	}
+
 	private void reportSent(Job job) {
 		// TODO Auto-generated method stub
 		
@@ -325,9 +415,8 @@ public class JobController {
         //templateModel.put("address", property.getFindAddress());
         templateModel.put("jobId", job.getId());
         templateModel.put("qsonelogo", "/dist/img/qsone.png");
-		emailService.sendAttachmentMessageUsingThymeleaf(property.getEmail(), "QSONE: Invoice for #"+job.getId(), templateModel, "template-invoice", "/samples/MODULE_DIAGRAM.pdf");
+		emailService.sendAttachmentMessageUsingThymeleaf(property.getEmail(), "QSONE: Invoice for #"+job.getId(), templateModel, "template-invoice", job.getInvoiceFile());
 	}
-
 
 	private List<JobState> getNextActions(String status) {
     	return jobStates.get(status) != null ? jobStates.get(status).getNextStates() : new ArrayList<JobState>();

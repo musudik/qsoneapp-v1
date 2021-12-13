@@ -73,12 +73,16 @@
                                         <td th:text="${job.inspected}">Inspected</td>
                                         <td th:text="${job.dueToDepreciator}">Due To Depreciator</td>
                                         <td>
+                                        	<span th:if="${condition}">
+ 												 <p>TRUE</p>
+											</span>
+											<span th:unless="${condition}">
+ 												 <span th:each="action : ${job.nextActions}">
+                                        		 	<a href="#" class="btn btn-primary btn-xs purple" title="${action.display}" th:href="@{'/job/nextAction/' + ${job.id} +'/'+ ${action.state}}"><i class="fa fa-arrow-circle-o-right" th:text="${action.display}"></i></a>
+                                        		  </span>
+											</span>
                                             <a href="#" class="btn btn-primary btn-xs purple editView" title="Edit" th:href="@{'/job/edit/'  + ${job.id}}"><i class="fa fa-edit"></i> Edit</a>
                                             <!-- <a href="#" class="btn btn-danger btn-xs purple deleteView" title="Delete" th:href="@{'/job/delete/' + ${job.id}}"><i class="fa fa-trash-o"></i> Delete</a> -->
-                                            <span th:each="action : ${job.nextActions}">
-                                        		<a href="#" class="btn btn-primary btn-xs purple" title="${action.display}" th:href="@{'/job/nextAction/' + ${job.id} +'/'+ ${action.state}}"><i class="fa fa-arrow-circle-o-right" th:text="${action.display}"></i></a>
-                                        		<!-- <a href="#" class="btn btn-primary btn-xs purple" title="${action.display}" th:href="@{'/job/' + ${action.state}}"><i th:attr="class=${action.state ? 'fa fa-trash-o' : 'fa fa-arrow-circle-o-right'}" th:text="${action.display}"></i></a> -->
-                                        	</span>
                                         </td>
                                     </tr>
                                     </tbody>

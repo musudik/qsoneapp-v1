@@ -68,7 +68,8 @@ public class ClientPropertyDto implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	//@NotEmpty(message = "First taxable end year can't be empty!")
 	private Date firstTaxableEndDate;
-	
+	@NotEmpty(message = "Organisation Tax DisplayName can't be empty!")
+	private String organisationTaxDisplayName;
 	
 	/**
 	 * @return the propertyType
@@ -243,6 +244,18 @@ public class ClientPropertyDto implements Serializable {
 	 */
 	public String getPostcode() {
 		return postcode;
+	}
+	/**
+	 * @return the organisationTaxDisplayName
+	 */
+	public String getOrganisationTaxDisplayName() {
+		return organisationTaxDisplayName;
+	}
+	/**
+	 * @param organisationTaxDisplayName the organisationTaxDisplayName to set
+	 */
+	public void setOrganisationTaxDisplayName(String organisationTaxDisplayName) {
+		this.organisationTaxDisplayName = organisationTaxDisplayName;
 	}
 	/**
 	 * @param postcode the postcode to set

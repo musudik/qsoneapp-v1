@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -97,6 +98,9 @@ public class Property extends BaseEntity implements Serializable {
 	
 	@Column(name = "job_id", nullable = true)
 	private Long jobId;
+	
+	@Column(name = "organisation_tax_display_name", nullable = false)
+	private String organisationTaxDisplayName;
 
 	
 	public String getPropertyMap() {
@@ -271,6 +275,20 @@ public class Property extends BaseEntity implements Serializable {
 	public void setPostcode(String postcode) {
 		this.postcode = postcode;
 	}
+	/**
+	 * @return the organisationTaxDisplayName
+	 */
+	public String getOrganisationTaxDisplayName() {
+		return organisationTaxDisplayName;
+	}
+
+	/**
+	 * @param organisationTaxDisplayName the organisationTaxDisplayName to set
+	 */
+	public void setOrganisationTaxDisplayName(String organisationTaxDisplayName) {
+		this.organisationTaxDisplayName = organisationTaxDisplayName;
+	}
+
 	/**
 	 * @return the country
 	 */

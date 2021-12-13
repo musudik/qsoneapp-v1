@@ -63,8 +63,14 @@ public class Job extends BaseEntity implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dueToDepreciator;
 	
+	@Column(name = "invoice_file", nullable = true)
+    private String invoiceFile;
+	
 	@Transient
 	private List<JobState> nextActions;
+	
+	@Transient
+	private String preparation;
 	
 	/**
 	 * @return the propertyId
@@ -198,6 +204,18 @@ public class Job extends BaseEntity implements Serializable {
 	 */
 	public void setDueToDepreciator(Date dueToDepreciator) {
 		this.dueToDepreciator = dueToDepreciator;
+	}
+	/**
+	 * @return the invoiceFile
+	 */
+	public String getInvoiceFile() {
+		return invoiceFile;
+	}
+	/**
+	 * @param invoiceFile the invoiceFile to set
+	 */
+	public void setInvoiceFile(String invoiceFile) {
+		this.invoiceFile = invoiceFile;
 	}
 	/**
 	 * @return the nextActions

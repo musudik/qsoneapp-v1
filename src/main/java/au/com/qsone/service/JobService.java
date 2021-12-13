@@ -11,7 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import au.com.qsone.entity.Invoice;
+import au.com.qsone.entity.Item;
 import au.com.qsone.entity.Job;
+import au.com.qsone.repository.IInvoiceRepository;
+import au.com.qsone.repository.IItemRepository;
 import au.com.qsone.repository.IJobRepository;
 
 @Service
@@ -20,6 +24,12 @@ public class JobService {
 
     @Autowired
     private IJobRepository repo;
+    
+    @Autowired
+    private IInvoiceRepository invoiceRepo;
+    
+    @Autowired
+    private IItemRepository itemRepo;
 
     public List<Job> listAll() {
         return repo.findAll();
@@ -56,5 +66,37 @@ public class JobService {
 
     public void delete(long id) {
         repo.deleteById(id);
+    }
+    
+    public List<Invoice> listInvoices() {
+        return invoiceRepo.findAll();
+    }
+    
+    public void saveInvoice(Invoice Job) {
+    	invoiceRepo.save(Job);
+    }
+
+    public Invoice getInvoice(long id) {
+        return invoiceRepo.findById(id).get();
+    }
+
+    public void deleteInvoice(long id) {
+    	invoiceRepo.deleteById(id);
+    }
+    
+    public List<Item> listItems() {
+        return itemRepo.findAll();
+    }
+    
+    public void saveItem(Item item) {
+    	itemRepo.save(item);
+    }
+
+    public Item getItem(long id) {
+        return itemRepo.findById(id).get();
+    }
+
+    public void deleteItem(long id) {
+    	itemRepo.deleteById(id);
     }
 }

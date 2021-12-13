@@ -162,7 +162,8 @@ public class EmailService {
 		helper.setTo(to);
 		helper.setSubject(subject);
 		helper.setText(process, true);
-		File file = ResourceUtils.getFile("classpath:MODULE_DIAGRAM.pdf");
+		//File file = ResourceUtils.getFile("classpath:"+attachment);
+		File file = ResourceUtils.getFile(attachment);
 		FileSystemResource fileSource = new FileSystemResource(file);
 		helper.addAttachment(fileSource.getFilename(), fileSource);
 		emailSender.send(mimeMessage);
