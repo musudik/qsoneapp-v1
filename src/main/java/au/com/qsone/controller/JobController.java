@@ -259,7 +259,6 @@ public class JobController {
         InvoiceItem invoiceItem = new InvoiceItem();
         invoiceItem.setItems(JobService.listItems());
         invoice.getInvoiceItems().add(invoiceItem);
-        invoice.getInvoiceItems().add(invoiceItem);
         getItems(model);
         model.addAttribute("invoice", invoice);
         return prepare_quote_template;
