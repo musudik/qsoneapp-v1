@@ -255,20 +255,15 @@ public class JobController {
         if (inputFlashMap != null) {
             job = (Job) inputFlashMap.get("job");
         }
-        invoice.setJobId(job.getId());
+        invoice.setJobId(String.valueOf(job.getId()));
         InvoiceItem invoiceItem = new InvoiceItem();
-        invoiceItem.setItems(JobService.listItems());
+        List<Item> items = JobService.listItems();
+        invoiceItem.setItems(items);
         invoice.getInvoiceItems().add(invoiceItem);
-        getItems(model);
+        model.addAttribute("itemsList", items);
         model.addAttribute("invoice", invoice);
         return prepare_quote_template;
     }
-    
-    private void getItems(Model model) {
-		List<Item> items = JobService.listItems();
-		model.addAttribute("itemsList", items);
-        //model.addAttribute("items", items.stream().collect(Collectors.toMap(i -> i.getItemId(), i -> i.getItemCode())));
-	}
     
     @PostMapping("/saveInvoice")
     public String saveInvoice(@Valid @ModelAttribute("invoice") Invoice invoice, BindingResult result, Model model){
@@ -278,17 +273,35 @@ public class JobController {
         if(result.hasErrors()){
             return prepare_quote_template;
         }
+        Date now = new Date();
+        invoice.getInvoiceItems().forEach(i -> updateDefaults(i, now));
         
         if (invoice.getInvoiceId() == null) {
         	invoice.setCreatedBy(getCurrentUser());
-        	invoice.setCreatedDate(new Date());
+        	invoice.setCreatedDate(now);
         } else {
         	invoice.setUpdatedBy(getCurrentUser());
-        	invoice.setUpdatedDate(new Date());
+        	invoice.setUpdatedDate(now);
         }
+        invoice.setSubTotal(BigDecimal.TEN);
+        invoice.setTerms("Terms");
+        invoice.setTaxTotal(BigDecimal.ONE);
+        invoice.setTaxCode("BLA09");
+        invoice.setTitle("First Invoice");
         JobService.saveInvoice(invoice);
         return list_redirect+"?success";
     }
+
+	private InvoiceItem updateDefaults(InvoiceItem invoiceItem, Date now ) {
+		 if (invoiceItem.getInvoiceItemId() == null) {
+	        	invoiceItem.setCreatedBy(getCurrentUser());
+	        	invoiceItem.setCreatedDate(now);
+        } else {
+        	invoiceItem.setUpdatedBy(getCurrentUser());
+        	invoiceItem.setUpdatedDate(now);
+        }
+		return invoiceItem;
+	}
 
 	private void prepareInvoice(Job job) {
       	job.setUpdatedBy(getCurrentUser());

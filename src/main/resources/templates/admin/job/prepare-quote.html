@@ -14,10 +14,13 @@
 			var idSplit = id.split("_");
 			var row = idSplit[1];
 			var data = $(item).val();
+			
 			var dataSplit = data.split(":");
-		    $('#itemCode_'+row).val(dataSplit[0]);
-		    $('#itemDescription_'+row).val(dataSplit[1]);
-		    $('#itemAmount_'+row).val(dataSplit[2]);
+			//alert(parseInt(dataSplit[0]));
+			$('#itemId_'+row).val(parseInt(dataSplit[0]));
+		    $('#itemCode_'+row).val(dataSplit[1]);
+		    $('#itemDescription_'+row).val(dataSplit[2]);
+		    $('#itemAmount_'+row).val(dataSplit[3]);
 		    $('#quantity_'+row).val('');
 		    $('#amount_'+row).val('');
 	   	}
@@ -30,16 +33,101 @@
 			var itemAmount = $('#itemAmount_'+row).val();
 			var amount = (parseFloat(quantity) * parseFloat(itemAmount)).toFixed(2);
 			if (amount == 'NaN') {
-				amount = '0.00';
+				NaNamount = '0.00';
 			}
 			$('#amount_'+row).val(amount);
+			
+			var amountDue = 0.00;
+			
+			$( "[id^='amount_']" ).each(function (i, el) {
+				var amount = $(this).val();
+				amountDue = (parseFloat(amount) + parseFloat(amountDue)).toFixed(2);
+		    });
+			alert("amountDue:"+amountDue);
+			$('#amountDue').val(amountDue);
 	   	}
+		
+		
+		$(document).ready(function () {
+		    let max_fields = 30;
+		    let index = 1;
+
+		    $('#addRow1').click(function (event) {
+		    	event.preventDefault();
+		    	
+		    	var select =  $('#itemsId_0')[0];
+
+		    	
+
+		    	var clone = $('#itemsList tr').clone()
+		    	clone.find('td :gt(0)');
+		    	clone.appendTo('#targetT')
+		    	//var $itemsList = $('#itemsId_0').clone();
+		    	//$('#itemsId_+ ').html($button);
+		        if (index < max_fields) {
+		        	var $options = $("#itemsId_0 > option").clone();
+		            $('#itemsId_' + index).append($options);
+		        	let newRow = jQuery('<tr id="invoiceItem_' + index + '">' +
+		        			//clone.appendTo(newRow) +
+		        			'<td>' +
+		   		 				'<select id="itemsId_' + index + '" class="form-control" onchange="onItemSelect(this);">' +
+		   		 				    //$('#itemsId_1').append($('<option>', { value: 1, text: 'Option Text'	})) '+
+		   		 					//$("#itemsId_0 > option").each(function() {'<option value="'+ this.value +'">' + this.text + '</option> });' +
+		   		 				'</select>' +
+		   	  				'</td>' +
+				   	  		'<td>' +
+		   		 				'<input id="itemId_' + index + '" name="invoiceItems[' + index + '].itemId" type="text" class="form-control" readonly="readonly" value=""/>' +
+		   	  				'</td>' +
+					   	  		'<td>' +
+		   		 				'<input id="itemCode_' + index + '"  type="text" class="form-control" readonly="readonly" />' +
+		   	  				'</td>' +
+				   	  		'<td>' +
+		   		 				'<input id="itemDescription_' + index + '" type="text" class="form-control" readonly="readonly" />' +
+		   	  				'</td>' +
+				   	  		'<td>' +
+				 				'<input id="itemAmount_' + index + '" type="text" class="form-control" readonly="readonly" />' +
+			  				'</td>' +
+			  				'<td>' +
+				 				'<input id="quantity_' + index + '" name="invoiceItems[' + index + '].quantity" type="text" class="form-control" onblur="onQuantityChange(this);" value=""/>' +
+			  				'</td>' +
+			  				'<td>' +
+				 				'<input id="taxUnitName_' + index + '" name="invoiceItems[' + index + '].taxUnitName" type="text" class="form-control" readonly="readonly" value=""/>' +
+			  				'</td>' +
+			  				'<td>' +
+				 				'<input id="amount_' + index + '" name="invoiceItems[' + index + '].amount" type="text" class="form-control" readonly="readonly" value=""/>' +
+			  				'</td>' +
+		   	  			'</tr>');
+		            index++;
+		            $('#itemsList').append(newRow);
+		            
+		            var $options = $("#itemsId_0 > option").clone();
+		            alert($options);
+		            //$('#itemsId_' + index).append($options);
+		            
+		            $("#itemsId_0 > option").each(function() {
+		            	$('select.#itemsId_' + index).append(this);
+		                alert(this.text + ' ' + this.value);
+		            });
+		            
+		        }
+
+		    });
+		});		
+		
+		function removeRow(row) {
+			var rowCount = $('#itemsList tr').length;
+			if (rowCount > 2) {
+				$(row).parent().parent().remove();	
+			} else {
+				alert('You atleast need one Items');
+			}
+		}
 		
 		$(document).ready(function(){
 			
 			$('#addRow').click(function(event){
 				event.preventDefault();
-				alert();
+				//alert();
 				var $clone = $('#itemsList tbody>tr:last');
 				var $tr = $(this).closest('tr');
 				
@@ -50,11 +138,14 @@
 		        $clone.find('td').each(function(){
 		            var el = $(this).find(':first-child');
 		            var id = el.attr('id') || null;
+		            var name = el.attr('name') || null;
 		            if(id) {
 		                var i = id.substr(id.length-1);
 		                var prefix = id.substr(0, (id.length-1));
+		                var nameReplace = name.replace(i, parseInt(i)+1);
 		                el.attr('id', prefix+(+i+1));
-		                el.attr('name', prefix+(+i+1));
+		                el.attr('name', nameReplace);
+		                el.attr('value', '');
 		            }
 		        });
 		        //$clone.find('input:text').val('');
@@ -72,6 +163,8 @@
 			     
 				//
 			});
+			
+			
 			
 	        /* $("#addRow").click(function(){
 	        	$("#itemsList").each(function(){
@@ -186,46 +279,61 @@
                     					</div>
                     				</td>
                     				<td width="70%" valign="top" style="padding-left:0px;">
-                    					<div class="row">
                     						<table id="itemsList" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
 				                                 <thead class="thead">
 				                                 <tr>
 				                                 	<th>Select Item</th>
+				                                 	<th>Item Id</th>
 				                                 	<th>Item Code</th>
 				                                 	<th>Description</th>
 				                                 	<th>Item Amount</th>
 				                                     <th>Quantity</th>
 				                                     <th>Tax Unit Name</th>
 				                                     <th>Total Item Amount</th>
+				                                     <th>Remove</th>
 				                                 </tr>
 				                                 </thead>
 				                                 <tbody>
 				                                 <tr th:id="'invoiceItem_' + ${count.index}" th:each="invoiceItem, count : *{invoiceItems}">
 				                                 	 <td>
-					                                 	 <select th:id="'itemId_' + ${count.index}" class="form-control" onchange="onItemSelect(this);">
-										                 	<option value=""> Select... </option>
-										                 	<option id="selectedItem"  th:each="item : ${itemsList}" th:value="${item.itemCode} +':' + ${item.description} +':' + ${item.amount}" th:utext="${item.description}"/>
+					                                 	 <select th:id="'itemsId_' + ${count.index}" th:name="'itemsId_' + ${count.index}" class="form-control" onchange="onItemSelect(this);">
+										                 	<option value="">Select... </option>
+										                 	<option id="selectedItem"  th:each="item : ${itemsList}" th:value="${item.itemId} +':' +${item.itemCode} +':' + ${item.description} +':' + ${item.amount}" th:utext="${item.description}"/>
 										                 </select>
 									                  </td>
-									                 <td><input th:id="'itemCode_' + ${count.index}" type="text" class="form-control" readonly="readonly"></td>
-				                                 	 <td><input th:id="'itemDescription_' + ${count.index}"  type="text" class="form-control" readonly="readonly" /></td>
-				                                     <td><input th:id="'itemAmount_' + ${count.index}" type="text" class="form-control" readonly="readonly" /></td>
-				                                     <td><input th:id="'quantity_' + ${count.index}" type="text" class="form-control" th:text="${invoiceItem.quantity}" onblur="onQuantityChange(this);" /></td>
-				                                     <td><input th:id="'taxUnitName_' + ${count.index}" th:text="${invoiceItem.taxUnitName}" type="text" class="form-control" readonly="readonly" /></td>
-				                                     <td><input th:id="'amount_' + ${count.index}" th:text="${invoiceItem.amount}" type="text" class="form-control" readonly="readonly" /></td>
+									                  <td>
+									                 	<input th:id="'itemId_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].itemId}" th:field="*{invoiceItems[__${count.index}__].itemId}" type="text" class="form-control" readonly="readonly" />
+									                 </td>
+									                 <td>
+									                 	<input th:id="'itemCode_' + ${count.index}" th:name="'itemCode_' + ${count.index}" type="text" class="form-control" readonly="readonly">
+									                 </td>
+				                                 	 <td><input th:id="'itemDescription_' + ${count.index}" th:name="'itemDescription_' + ${count.index}"  type="text" class="form-control" readonly="readonly" /></td>
+				                                     <td><input th:id="'itemAmount_' + ${count.index}" th:name="'itemAmount_' + ${count.index}" type="text" class="form-control" readonly="readonly" /></td>
+				                                     <td><input th:id="'quantity_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].quantity}" type="text" class="form-control" th:field="*{invoiceItems[__${count.index}__].quantity}" onblur="onQuantityChange(this);" /></td>
+				                                     <td><input th:id="'taxUnitName_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].taxUnitName}" type="text" class="form-control" th:field="*{invoiceItems[__${count.index}__].taxUnitName}" /></td>
+				                                     <td><input th:id="'amount_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].amount}" type="text" class="form-control"  th:field="*{invoiceItems[__${count.index}__].amount}"  readonly="readonly" /></td>
+				                                     <td><button th:id="'removeRow_' + ${count.index}" class="btn btn-info pull-right" onclick="removeRow(this);"><i class="fa fa-remove"></i> Remove</button></td>
 				                                 </tr>
 				                                 </tbody>
 				                             </table>
+				                             
 											 <div class="box-footer center">
-			                                 	<button id="addRow" type="addRow" class="btn btn-info pull-right"><i class="fa fa-add"></i> Add Row</button>
+											 		<button id="addRow" type="addRow" class="btn btn-info pull-right"><i class="fa fa-plus"></i> Add</button>
 			                                 </div>
                     					<div class="form-group">
-				                            <label class="col-sm-1 control-label">Summary</label>
+				                            <label class="col-sm-7 control-label">Amount Due</label>
+				                            <div class="col-sm-2">
+				                            	<input th:id="amountDue" th:name="*{amountDue}" type="text" class="form-control"  th:field="*{amountDue}"  readonly="readonly" />
+				                            </div>
+				                        </div>
+				                        <div class="form-group">
+				                            <label class="col-sm-7 control-label">Summary</label>
 				                            <div class="col-sm-5">
 				                            	<textarea rows="8" cols="120" class="form-control" name="lines" 
 				                            	th:field="*{summary}" placeholder="Enter summary"></textarea>
 				                            </div>
 				                        </div>
+				                        
                     				</td>
                     			</tr>
                     		</table>
@@ -233,7 +341,9 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer center">
-                       
+                        <a th:href="@{/job/list}">
+                            <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
+                        </a>
                         <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i> Save</button>
                         
                     </div>

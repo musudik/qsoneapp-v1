@@ -32,64 +32,50 @@ public class Invoice extends BaseEntity implements Serializable {
 	@Column(name = "invoice_id")
 	Long invoiceId;
 	
-	@NotEmpty(message = "Job can't be empty")
 	@Column(name = "job_id", nullable = false)
-    private Long jobId;
+    private String jobId;
 	
-	@NotEmpty(message = "Invoice Type can't be empty!")
 	@Column(name = "invoice_type", nullable = false)
     private String invoiceType;
 	
-	@NotEmpty(message = "Invoice title can't be empty!")
 	@Column(name = "invoice_title", nullable = false)
     private String invoiceTitle;
 	
-	@NotEmpty(message = "Contact Type can't be empty!")
 	@Column(name = "contact_type", nullable = false)
     private String contactTypeName;
 	
-	@NotEmpty(message = "Contact Type value can't be empty!")
 	@Column(name = "contact_type_value", nullable = false)
     private String contactTypeValue;
 	
-	@NotEmpty(message = "Invoice date value can't be empty!")
 	@Column(name = "invoice_date", nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date invoiceDate;
 	
-	@NotEmpty(message = "Expiry date value can't be empty!")
-	@Column(name = "expiryDate", nullable = false)
+	@Column(name = "expiry_date", nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiryDate;
 	
-	@NotEmpty(message = "Reference can't be empty!")
 	@Column(name = "reference", nullable = false)
     private String reference;
 	
-	@NotEmpty(message = "title can't be empty!")
 	@Column(name = "title", nullable = false)
     private String title;
 	
-	@NotEmpty(message = "summary can't be empty!")
 	@Column(name = "summary", nullable = false)
     private String summary;
 	
 	@OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY)
     private List<InvoiceItem> invoiceItems = new ArrayList<>();
 	
-	@NotEmpty(message = "Sub total can't be empty!")
-	@Column(name = "sub_total", nullable = false)
+	@Column(name = "sub_total", nullable = true)
     private BigDecimal subTotal;
 	
-	@NotEmpty(message = "taxCode can't be empty!")
-	@Column(name = "taxCode", nullable = false)
+	@Column(name = "tax_code", nullable = true)
     private String taxCode;
 	
-	@NotEmpty(message = "Tax total can't be empty!")
-	@Column(name = "tax_total", nullable = false)
+	@Column(name = "tax_total", nullable = true)
     private BigDecimal taxTotal;
 	
-	@NotEmpty(message = "amount due can't be empty!")
 	@Column(name = "amount_due", nullable = false)
     private BigDecimal amountDue;
 	
@@ -113,14 +99,14 @@ public class Invoice extends BaseEntity implements Serializable {
 	/**
 	 * @return the jobId
 	 */
-	public Long getJobId() {
+	public String getJobId() {
 		return jobId;
 	}
 
 	/**
 	 * @param jobId the jobId to set
 	 */
-	public void setJobId(Long jobId) {
+	public void setJobId(String jobId) {
 		this.jobId = jobId;
 	}
 
@@ -202,7 +188,7 @@ public class Invoice extends BaseEntity implements Serializable {
 	}
 
 	/**
-	 * @param expirtyDate the expiryDate to set
+	 * @param expiryDate the expiryDate to set
 	 */
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
