@@ -6,6 +6,9 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import au.com.qsone.entity.Invoice;
+import au.com.qsone.entity.Job;
+
 
 public class DocumentRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -15,6 +18,8 @@ public class DocumentRequest implements Serializable {
     private String title;
     private String fileName;
     private Property property;
+    private Invoice invoice;
+    private Job job;
     private Asset asset;
     private Object body;
     private BigDecimal lowValuePool;
@@ -80,6 +85,18 @@ public class DocumentRequest implements Serializable {
 	 */
 	public void setProperty(Property property) {
 		this.property = property;
+	}
+	public Invoice getInvoice() {
+		return invoice;
+	}
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
+	public Job getJob() {
+		return job;
+	}
+	public void setJob(Job job) {
+		this.job = job;
 	}
 	/**
 	 * @return the asset

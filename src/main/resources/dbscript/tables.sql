@@ -129,4 +129,10 @@ INSERT INTO BUILDING_GROUP (building_group_id, building_group, created_date, cre
 
 
 INSERT INTO BUILDING_SUB_GROUP (building_sub_group_id, buildingGroup, createdDate, createdBy) VALUES (1, 'Administration, Civic', '2021-11-05 00:00:00', 'admin');
+
+INSERT INTO ITEM (item_id,created_by,created_date,updated_by,amount,description,item_code ) VALUES (2000,'musudi.kiran@gmail.com','2021-11-26 23:52:27','',100.0,'Electric motor for hot water','Elec Motor Hot Water');
+INSERT INTO ITEM (item_id,created_by,created_date,updated_by,amount,description,item_code ) VALUES (2001,'musudi.kiran@gmail.com','2021-11-26 23:52:27','',110.0,'Carpet roll 50 ft','Carpet roll');
+INSERT INTO ITEM (item_id,created_by,created_date,updated_by,amount,description,item_code ) VALUES (2002,'musudi.kiran@gmail.com','2021-11-26 23:52:27','',120.0,'Kichen set Modern 5000','Kitchen Set');
+INSERT INTO ITEM (item_id,created_by,created_date,updated_by,amount,description,item_code ) VALUES (2003,'musudi.kiran@gmail.com','2021-11-26 23:52:27','',130.0,'Smart meter for electrcity','Smart Meter');
+INSERT INTO ITEM (item_id,created_by,created_date,updated_by,amount,description,item_code ) VALUES (2004,'musudi.kiran@gmail.com','2021-11-26 23:52:27','',140.0,'50 ft Closet cum Wardrobe','Closet/Wardrobe');
 commit;

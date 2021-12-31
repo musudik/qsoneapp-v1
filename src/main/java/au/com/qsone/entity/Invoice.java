@@ -2,6 +2,9 @@ package au.com.qsone.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 
@@ -26,6 +30,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @SequenceGenerator(name="seq_invoice", initialValue=1000, allocationSize=1)
 public class Invoice extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	private static DateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");  
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator="seq_invoice")
@@ -82,6 +88,11 @@ public class Invoice extends BaseEntity implements Serializable {
 	@Column(name = "terms", nullable = true)
     private String terms;
 
+	@Transient
+	private String invoiceDateFormated;
+	
+	@Transient
+	private String expiryDateFormated;
 	/**
 	 * @return the invoiceId
 	 */
@@ -319,6 +330,22 @@ public class Invoice extends BaseEntity implements Serializable {
 	 */
 	public void setTerms(String terms) {
 		this.terms = terms;
+	}
+
+	public String getInvoiceDateFormated() {
+		return DATE_FORMAT.format(invoiceDate);
+	}
+
+	public void setInvoiceDateFormated(String invoiceDateFormated) {
+		this.invoiceDateFormated = invoiceDateFormated;
+	}
+
+	public String getExpiryDateFormated() {
+		return DATE_FORMAT.format(expiryDate);
+	}
+
+	public void setExpiryDateFormated(String expiryDateFormated) {
+		this.expiryDateFormated = expiryDateFormated;
 	}
 	
 	

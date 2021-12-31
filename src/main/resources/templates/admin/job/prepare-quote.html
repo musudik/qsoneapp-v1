@@ -43,7 +43,7 @@
 				var amount = $(this).val();
 				amountDue = (parseFloat(amount) + parseFloat(amountDue)).toFixed(2);
 		    });
-			alert("amountDue:"+amountDue);
+			//alert("amountDue:"+amountDue);
 			$('#amountDue').val(amountDue);
 	   	}
 		
@@ -116,8 +116,15 @@
 		
 		function removeRow(row) {
 			var rowCount = $('#itemsList tr').length;
-			if (rowCount > 2) {
-				$(row).parent().parent().remove();	
+			if (rowCount > 1) {
+				$(row).parent().parent().remove();
+				var amountDue = 0.00;
+				
+				$( "[id^='amount_']" ).each(function (i, el) {
+					var amount = $(this).val();
+					amountDue = (parseFloat(amount) + parseFloat(amountDue)).toFixed(2);
+			    });
+				$('#amountDue').val(amountDue);
 			} else {
 				alert('You atleast need one Items');
 			}
@@ -131,25 +138,34 @@
 				var $clone = $('#itemsList tbody>tr:last');
 				var $tr = $(this).closest('tr');
 				
-				$('#itemsList tbody>tr:last').clone(true).insertAfter('#itemsList tbody>tr:last');
+				$('#itemsList > tbody>tr:last').clone(true).insertAfter($clone);
+				//$('#itemsList > tbody>tr:last').clone(true).insertAfter('#itemsList tbody>tr:last');
 		        //var allTrs = $tr.closest('itemsList').find('tr');
 		        //var lastTr = allTrs[allTrs.length-1];
 		        //var $clone = $(lastTr).clone();
-		        $clone.find('td').each(function(){
+		        var rowCount = $('#itemsList tr').length;
+		        //alert(parseInt(rowCount));
+		        
+		        $clone = $('#itemsList tbody>tr:last');
+		        $clone.find('td').each(function() {
 		            var el = $(this).find(':first-child');
 		            var id = el.attr('id') || null;
 		            var name = el.attr('name') || null;
+		            var value = el.attr('value') || null;
+		            //alert();
 		            if(id) {
 		                var i = id.substr(id.length-1);
+		                //alert(prefix);
 		                var prefix = id.substr(0, (id.length-1));
-		                var nameReplace = name.replace(i, parseInt(i)+1);
-		                el.attr('id', prefix+(+i+1));
+		                var nameReplace = name.replace(i, parseInt(rowCount)-1);
+		                el.attr('id', prefix+(parseInt(rowCount)-1));
 		                el.attr('name', nameReplace);
-		                el.attr('value', '');
+		                el.val('');
 		            }
 		        });
 		        //$clone.find('input:text').val('');
-		        $clone.insertAfter('#itemsList tbody>tr:last');
+		        //$('#itemsList > tbody > tr').eq(parseInt(rowCount)).after($clone);
+		        //$clone.insertAfter('#itemsList > tbody>tr:last');
 		        //$(table).append($tr); 
 		        //$tr.closest('itemsList').append($clone);
 				
@@ -211,9 +227,9 @@
                 	
                     <div class="box-body">
                     	<div class="container-fluid">
-                    		<table>
+                    		<table width="100%">
                     			<tr>
-                    				<td width="30%" valign="top">
+                    				<td width="35%" valign="top">
                     					<div class="row">
                     						<div class="form-group">
 					                            <label class="col-sm-4 control-label">Job Id</label>
@@ -244,7 +260,12 @@
 					                                <input type="text" class="form-control" th:field="*{reference}" placeholder="Reference">
 					                            </div>
 					                        </div>
-					                        <div class="form-group">
+                    					</div>
+                    				</td>
+                    				<td width="35%" valign="top" style="padding-left:0px;">
+                    				
+                    					<div class="row">
+                    						<div class="form-group">
 					                            <label class="col-sm-4 control-label">Contact Type</label>
 					                            <div class="col-sm-5">
 					                            	<select th:field="*{contactTypeName}" class="form-control" required>
@@ -275,72 +296,92 @@
 					                                <p class="text-red" th:if="${#fields.hasErrors('expiryDate')}" required th:errors="*{expiryDate}"></p>
 					                            </div>
 					                        </div>
-					                        
                     					</div>
                     				</td>
-                    				<td width="70%" valign="top" style="padding-left:0px;">
-                    						<table id="itemsList" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                    				<td width="30%" valign="top" style="padding-right:0px;">
+                    					<div class="row">
+                    						<div class="form-group">
+						                            <label class="col-sm-2 control-label">Summary</label>
+						                            <div class="col-sm-9">
+						                            	<textarea rows="8" cols="120" class="form-control" name="lines" 
+						                            	th:field="*{summary}" placeholder="Enter summary"></textarea>
+						                            </div>
+						                     </div>
+                    					</div>
+                    				</td>
+                    			</tr>
+                    		</table>
+                    		<hr style="width:100%;text-align:left;margin-left:0"/>
+                    		<table width="99%">
+                    			<tr>
+                    				<td width="100%" valign="top" style="padding-left:40px">
+                    				    <div class="row">
+	                    					<table id="itemsHeader" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
 				                                 <thead class="thead">
-				                                 <tr>
-				                                 	<th>Select Item</th>
-				                                 	<th>Item Id</th>
-				                                 	<th>Item Code</th>
-				                                 	<th>Description</th>
-				                                 	<th>Item Amount</th>
-				                                     <th>Quantity</th>
-				                                     <th>Tax Unit Name</th>
-				                                     <th>Total Item Amount</th>
-				                                     <th>Remove</th>
-				                                 </tr>
+					                                 <tr>
+					                                 	<th width="10%">Select Item</th>
+					                                 	<th width="7%">Item Id</th>
+					                                 	<th width="7%">Item Code</th>
+					                                 	<th width="20%">Description</th>
+					                                 	<th width="7%">Item Amount</th>
+					                                     <th width="5%">Quantity</th>
+					                                     <th width="10%">Tax Unit Name</th>
+					                                     <th width="7%">Total Item Amount</th>
+					                                     <th width="5%">Remove</th>
+					                                 </tr>
 				                                 </thead>
+				                            </table>
+				                            <table id="itemsList" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
 				                                 <tbody>
 				                                 <tr th:id="'invoiceItem_' + ${count.index}" th:each="invoiceItem, count : *{invoiceItems}">
-				                                 	 <td>
+				                                 	 <td width="10%">
 					                                 	 <select th:id="'itemsId_' + ${count.index}" th:name="'itemsId_' + ${count.index}" class="form-control" onchange="onItemSelect(this);">
 										                 	<option value="">Select... </option>
 										                 	<option id="selectedItem"  th:each="item : ${itemsList}" th:value="${item.itemId} +':' +${item.itemCode} +':' + ${item.description} +':' + ${item.amount}" th:utext="${item.description}"/>
 										                 </select>
 									                  </td>
-									                  <td>
+									                  <td width="7%">
 									                 	<input th:id="'itemId_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].itemId}" th:field="*{invoiceItems[__${count.index}__].itemId}" type="text" class="form-control" readonly="readonly" />
 									                 </td>
-									                 <td>
+									                 <td width="7%">
 									                 	<input th:id="'itemCode_' + ${count.index}" th:name="'itemCode_' + ${count.index}" type="text" class="form-control" readonly="readonly">
 									                 </td>
-				                                 	 <td><input th:id="'itemDescription_' + ${count.index}" th:name="'itemDescription_' + ${count.index}"  type="text" class="form-control" readonly="readonly" /></td>
-				                                     <td><input th:id="'itemAmount_' + ${count.index}" th:name="'itemAmount_' + ${count.index}" type="text" class="form-control" readonly="readonly" /></td>
-				                                     <td><input th:id="'quantity_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].quantity}" type="text" class="form-control" th:field="*{invoiceItems[__${count.index}__].quantity}" onblur="onQuantityChange(this);" /></td>
-				                                     <td><input th:id="'taxUnitName_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].taxUnitName}" type="text" class="form-control" th:field="*{invoiceItems[__${count.index}__].taxUnitName}" /></td>
-				                                     <td><input th:id="'amount_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].amount}" type="text" class="form-control"  th:field="*{invoiceItems[__${count.index}__].amount}"  readonly="readonly" /></td>
-				                                     <td><button th:id="'removeRow_' + ${count.index}" class="btn btn-info pull-right" onclick="removeRow(this);"><i class="fa fa-remove"></i> Remove</button></td>
+				                                 	 <td width="20%"><input th:id="'itemDescription_' + ${count.index}" th:name="'itemDescription_' + ${count.index}"  type="text" class="form-control" readonly="readonly" /></td>
+				                                     <td width="7%"><input th:id="'itemAmount_' + ${count.index}" th:name="'itemAmount_' + ${count.index}" type="text" class="form-control" readonly="readonly" /></td>
+				                                     <td width="5%"><input th:id="'quantity_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].quantity}" type="text" class="form-control" th:field="*{invoiceItems[__${count.index}__].quantity}" onblur="onQuantityChange(this);" /></td>
+				                                     <td width="10%"><input th:id="'taxUnitName_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].taxUnitName}" type="text" class="form-control" th:field="*{invoiceItems[__${count.index}__].taxUnitName}" /></td>
+				                                     <td width="7%"><input th:id="'amount_' + ${count.index}" th:name="*{invoiceItems[__${count.index}__].amount}" type="text" class="form-control"  th:field="*{invoiceItems[__${count.index}__].amount}"  readonly="readonly" /></td>
+				                                     <td width="5%"><button th:id="'removeRow_' + ${count.index}" class="btn btn-info pull-right" onclick="removeRow(this);"><i class="fa fa-remove"></i> Remove</button></td>
 				                                 </tr>
 				                                 </tbody>
 				                             </table>
 				                             
 											 <div class="box-footer center">
-											 		<button id="addRow" type="addRow" class="btn btn-info pull-right"><i class="fa fa-plus"></i> Add</button>
+											 	<button id="addRow" type="addRow" class="btn btn-info pull-right"><i class="fa fa-plus"></i> Add</button>
 			                                 </div>
-                    					<div class="form-group">
-				                            <label class="col-sm-7 control-label">Amount Due</label>
-				                            <div class="col-sm-2">
-				                            	<input th:id="amountDue" th:name="*{amountDue}" type="text" class="form-control"  th:field="*{amountDue}"  readonly="readonly" />
-				                            </div>
-				                        </div>
-				                        <div class="form-group">
-				                            <label class="col-sm-7 control-label">Summary</label>
-				                            <div class="col-sm-5">
-				                            	<textarea rows="8" cols="120" class="form-control" name="lines" 
-				                            	th:field="*{summary}" placeholder="Enter summary"></textarea>
-				                            </div>
-				                        </div>
-				                        
+			                                 <hr style="width:100%;text-align:left;margin-left:0"/>
+			                                 <table id="itemsHeader" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+				                                 <thead class="thead">
+					                                 <tr>
+					                                 	<td width="10%"></td>
+					                                 	<td width="7%"></td>
+					                                 	<td width="7%"></td>
+					                                 	<td width="20%"></td>
+					                                 	<td width="7%"></td>
+					                                     <td width="5%"></td>
+					                                     <td width="10%"></td>
+					                                     <td width="12%" colspan="2">Amount Due <input th:id="amountDue" th:name="*{amountDue}" type="text" class="form-control"  th:field="*{amountDue}"  readonly="readonly" /></td>
+					                                 </tr>
+				                                 </thead>
+				                            </table>
+					                     </div>
                     				</td>
                     			</tr>
                     		</table>
 				        </div>
                     </div>
                     <!-- /.box-body -->
-                    <div class="box-footer center">
+                    <div class="box-footer center" style="padding:40px">
                         <a th:href="@{/job/list}">
                             <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
                         </a>

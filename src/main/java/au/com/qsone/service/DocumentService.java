@@ -17,6 +17,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 import au.com.qsone.web.dto.DocumentRequest;
+import au.com.qsone.web.dto.EmailTemplateRequest;
 
 @Service
 public class DocumentService {
@@ -37,6 +38,58 @@ public class DocumentService {
             context.put("lowValuePool", request.getLowValuePool());
             context.put("firstTaxableEndDate", request.getFirstTaxableEndDate());
             context.put("openingValueCost", request.getOpeningValueCost());
+
+            // get the Template
+            Template t = ve.getTemplate(request.getTemplate());
+
+            // render the template into a Writer, here a StringWriter
+            StringWriter writer = new StringWriter();
+            t.merge(context, writer);
+            String html = writer.toString();
+
+            Document document = new Document();
+            document.addAuthor(request.getCreatedBy());
+            document.addCreationDate();
+            document.addProducer();
+            document.addCreator(request.getCreatedBy());
+            document.addTitle(request.getTitle());
+            document.setPageSize(PageSize.LETTER);
+
+            OutputStream file = new FileOutputStream(new File(request.getFileName()));
+            pdfWriter = PdfWriter.getInstance(document, file);
+
+            document.open();
+
+            XMLWorkerHelper xmlWorkerHelper = XMLWorkerHelper.getInstance();
+            xmlWorkerHelper.getDefaultCssResolver(true);
+            xmlWorkerHelper.parseXHtml(pdfWriter, document, new StringReader(html));
+            // close the document
+            document.close();
+            // close the writer
+            pdfWriter.close();
+            generated = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return generated;
+    }
+    
+    public boolean generateEmailAttachments(EmailTemplateRequest request) {
+        boolean generated = false;
+        PdfWriter pdfWriter = null;
+
+        try {
+            // initialize velocity engine
+            VelocityEngine ve = new VelocityEngine();
+            ve.init();
+
+            // add that list to a VelocityContext
+            VelocityContext context = new VelocityContext();
+            context.put("organisationName", request.getOrganisationName());
+            context.put("organisationPostalAddres", request.getOrganisationPostalAddress());
+            context.put("property", request.getProperty());
+            context.put("invoice", request.getInvoice());
 
             // get the Template
             Template t = ve.getTemplate(request.getTemplate());

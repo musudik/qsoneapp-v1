@@ -30,6 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
@@ -57,6 +58,7 @@ import au.com.qsone.web.dto.JobState;
 
 @Controller
 @RequestMapping("/job")
+@Transactional
 public class JobController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(JobController.class);
@@ -266,42 +268,17 @@ public class JobController {
     }
     
     @PostMapping("/saveInvoice")
-    public String saveInvoice(@Valid @ModelAttribute("invoice") Invoice invoice, BindingResult result, Model model){
+    public String saveInvoice(@Valid @ModelAttribute("invoice") Invoice invoice, BindingResult result, Model model) throws MessagingException, IOException{
     	
         model.addAttribute("invoice", invoice);
 
         if(result.hasErrors()){
             return prepare_quote_template;
         }
-        Date now = new Date();
-        invoice.getInvoiceItems().forEach(i -> updateDefaults(i, now));
+       	JobService.saveInvoice(invoice);
         
-        if (invoice.getInvoiceId() == null) {
-        	invoice.setCreatedBy(getCurrentUser());
-        	invoice.setCreatedDate(now);
-        } else {
-        	invoice.setUpdatedBy(getCurrentUser());
-        	invoice.setUpdatedDate(now);
-        }
-        invoice.setSubTotal(BigDecimal.TEN);
-        invoice.setTerms("Terms");
-        invoice.setTaxTotal(BigDecimal.ONE);
-        invoice.setTaxCode("BLA09");
-        invoice.setTitle("First Invoice");
-        JobService.saveInvoice(invoice);
         return list_redirect+"?success";
     }
-
-	private InvoiceItem updateDefaults(InvoiceItem invoiceItem, Date now ) {
-		 if (invoiceItem.getInvoiceItemId() == null) {
-	        	invoiceItem.setCreatedBy(getCurrentUser());
-	        	invoiceItem.setCreatedDate(now);
-        } else {
-        	invoiceItem.setUpdatedBy(getCurrentUser());
-        	invoiceItem.setUpdatedDate(now);
-        }
-		return invoiceItem;
-	}
 
 	private void prepareInvoice(Job job) {
       	job.setUpdatedBy(getCurrentUser());

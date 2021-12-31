@@ -1,0 +1,360 @@
+<html>
+<head>
+<title>Quote</title>
+<style type="text/css">
+     body { 
+		font-family: Arial; 
+		font-size: 17.0px;
+	}
+	 
+	.pos { 
+		position: absolute; 
+		z-index: 0; 
+		left: 0px; 
+		top: 0px 
+	}
+	.dataTitleDiv {
+		height:18px;
+		font-family:Arial;
+		font-size:12.2px;
+		font-weight:bold;
+		color:#000000;
+	}
+	.dataDiv {
+		height:18px;
+		font-family:Arial;
+		font-size:11.5px;
+		color:#000000;
+	}
+	.titleDiv {
+		font-family:Arial;
+		font-size:28.0px;
+		color:#000000;
+	}
+	.subTitleDiv {
+		font-family:Arial;
+		font-size:15.1px;
+		font-weight:bold;
+		color:#000000;
+	}
+	.headerDiv {
+		height:18px;
+		font-family:Arial;
+		font-size:13.2px;
+		font-weight:bold;
+		color:#000000;
+	}
+</style>
+</head>
+#set ($dateFormatter = $dateTool.getDateFormat("dd-MM-yyyy", $dateTool.getLocale(), $dateTool.getTimeZone()) )
+#set ($formattedInvoiceDate = $dateFormatter.parse($invoice.invoiceDate))
+#set ($formattedExpiryDate = $dateFormatter.parse($invoice.expiryDate))
+<body style="width: 98%; height:98%">
+	<div style="float:center; width:100%;">
+	   <img src="src/main/resources/static/dist/img/qsone.png" height="76%" width="80%" alt ="QSONE"/>
+	   <br/>  
+	   <table style="float:center; width:100%; padding:20px">
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 40%;">
+					<div class="titleDiv">
+					   <span>$invoice.invoiceTitle</span>
+					</div>
+					<br/>
+					<div class="dataDiv">
+					   <span>$property.owner</span>
+					</div>
+					<div class="dataDiv">
+					   <span>$property.propertyMap</span>
+					</div>
+					<div class="dataDiv">
+					   <span>$invoice.contactTypeName: $invoice.contactTypeValue</span>
+					</div>
+				</td>
+				<td valign="top" style="width: 30%;padding:20px">
+					<div class="dataTitleDiv">
+						<span>Date</span>
+					</div>
+					<div class="dataDiv">
+						<span style=" font-family:Arial; font-size:11.4px; color:#000000">
+						$invoice.invoiceDateFormated
+						</span>
+					</div>
+					<br/>
+					<div class="dataTitleDiv">
+					   <span>Expiry</span>
+					</div>
+					<div class="dataDiv">
+					   <span style=" font-family:Arial; font-size:11.4px; color:#000000">
+					   $invoice.expiryDateFormated</span>
+					</div>
+					<br/>
+					<div class="dataTitleDiv">
+					   <span>Account Number</span>
+					</div>
+					<div class="dataDiv">
+					   <span>$property.id</span>
+					</div>
+					<br/>
+					<div class="dataTitleDiv">
+					   <span>Quote Number</span>
+					</div>
+					<div class="dataDiv">
+					   <span>$invoice.invoiceId</span>
+					</div>
+					<br/>
+					<div class="dataTitleDiv">
+					   <span>Reference</span>
+					</div>
+					<div class="dataDiv">
+					   <span>$invoice.reference</span>
+					</div>
+				</td>
+				<td valign="top" style="width: 30%; padding:20px" >
+					<div class="dataDiv">
+					   <span>$organisationName</span>
+					</div>
+					<div class="dataDiv">
+					   <span>$organisationPostalAddres</span>
+					</div>
+				</td>
+			</tr>
+	   </table>
+	   <br/><br/>
+	   <table style="float:left; width:100%; padding:20px">
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 100%;">
+					<div class="subTitleDiv">
+					   <span>$invoice.invoiceTitle</span>
+					</div>
+			    </td>
+			</tr>
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 100%;">
+					
+			    </td>
+			</tr>
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 100%;">
+					<div class="dataDiv">
+					   <span>$invoice.summary</span>
+					</div>
+			    </td>
+			</tr>
+	   </table>
+	   <br/><br/>
+	   #set( $count = 1 )
+	   <table style="float:center; width:100%; padding:20px">
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 40%;">
+					<div class="headerDiv">
+					   <span>Description</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="headerDiv">
+					   <span>Quantity</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="headerDiv">
+					   <span>Unit Price</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 20%;">
+					<div class="headerDiv">
+					   <span>TaxUnit Name</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 14%;">
+					<div class="headerDiv">
+					   <span>Amount (AUD)</span>
+					</div>
+			    </td>
+			</tr>
+			<tr>
+				<td colspan="5">
+					<hr style="width:100%;text-align:left;margin-left:0"/>
+				</td>
+			</tr>
+			#foreach( $invoiceItem in $invoice.invoiceItems )
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 40%;">
+					<div class="dataDiv">
+					   <span>$invoiceItem.itemId</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   <span>$invoiceItem.quantity</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   <span>$invoiceItem.taxUnitName</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 20%;">
+					<div class="dataDiv">
+					   <span>$invoiceItem.taxUnitName</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 14%;">
+					<div class="dataDiv">
+					   <span>$invoiceItem.amount</span>
+					</div>
+			    </td>
+			</tr>
+			#set( $count = $count + 1 ) #end
+			
+			<tr>
+				<td colspan="5">
+					<hr style="width:100%;text-align:left;margin-left:0"/>
+				</td>
+			</tr>
+			
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 40%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 20%;">
+					<div class="dataDiv">
+					   <span>Subtotal</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 14%;">
+					<div class="dataDiv">
+					   <span>$invoice.subTotal</span>
+					</div>
+			    </td>
+			</tr>
+			
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 40%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 20%;">
+					<div class="dataDiv">
+					   <span>$invoice.taxCode</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 14%;">
+					<div class="dataDiv">
+					   <span>$invoice.taxTotal</span>
+					</div>
+			    </td>
+			</tr>
+			
+			
+			<tr>
+				<td valign="top" style="width: 40%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td colspan="3">
+					<hr style="width:100%;text-align:left;margin-left:0"/>
+				</td>
+			</tr>
+			
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 40%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 20%;">
+					<div class="headerDiv">
+					   <span>Total (AUD)</span>
+					</div>
+			    </td>
+				<td valign="top" style="width: 14%;">
+					<div class="dataDiv">
+					   <span>$invoice.amountDue</span>
+					</div>
+			    </td>
+			</tr>
+			
+			<tr>
+				<td valign="top" style="width: 40%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td valign="top" style="width: 13%;">
+					<div class="dataDiv">
+					   
+					</div>
+			    </td>
+				<td colspan="3">
+					<hr style="width:100%;text-align:left;margin-left:0"/>
+				</td>
+			</tr>
+	   </table>
+	   
+	   <br/><br/>
+	   <table style="float:left; width:100%; padding:20px">
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 100%;">
+					<div class="subTitleDiv">
+					   <span>Terms</span>
+					</div>
+			    </td>
+			</tr>
+			<tr style="width:100%;valign:top;">
+				<td>
+					<hr style="width:100%;text-align:left;margin-top:0"/>
+				</td>
+			</tr>
+			<tr style="width:100%;valign:top;">
+				<td valign="top" style="width: 100%;">
+					<div class="dataDiv">
+					   <span>$invoice.terms</span>
+					</div>
+			    </td>
+			</tr>
+	   </table>
+	   
+	   
+	   
+	</div>
+</body>
+</html>
