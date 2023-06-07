@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.format.annotation.DateTimeFormat;
+	import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "PROPERTY", uniqueConstraints={@UniqueConstraint(columnNames = {"flat_number" , "street_name", "suburb", "state", "postcode"})})
